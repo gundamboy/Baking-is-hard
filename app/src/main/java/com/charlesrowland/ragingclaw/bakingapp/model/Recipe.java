@@ -7,14 +7,11 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.charlesrowland.ragingclaw.bakingapp.Ingredient;
-import com.charlesrowland.ragingclaw.bakingapp.Step;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Recipe implements Parcelable {
 
-    @SerializedName("id")
     @Expose
     private Integer id;
     @SerializedName("name")
@@ -57,7 +54,7 @@ public class Recipe implements Parcelable {
         this.ingredients = ingredients;
     }
 
-    public List<com.charlesrowland.ragingclaw.bakingapp.Step> getSteps() {
+    public List<Step> getSteps() {
         return steps;
     }
 
@@ -81,7 +78,6 @@ public class Recipe implements Parcelable {
         this.image = image;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -103,9 +99,9 @@ public class Recipe implements Parcelable {
     protected Recipe(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.name = in.readString();
-        this.ingredients = new ArrayList<Ingredient>();
+        this.ingredients = new ArrayList<>();
         in.readList(this.ingredients, Ingredient.class.getClassLoader());
-        this.steps = new ArrayList<Step>();
+        this.steps = new ArrayList<>();
         in.readList(this.steps, Step.class.getClassLoader());
         this.servings = (Integer) in.readValue(Integer.class.getClassLoader());
         this.image = in.readString();

@@ -22,7 +22,7 @@
 
     <style name="RecipeListItemMetaText" parent="AppTheme">
         <item name="android:textColor">@color/primaryTextColor</item>
-        <item name="android:textSize">@dimen/text10</item>
+        <item name="android:textSize">@dimen/text12</item>
     </style>
 
 </resources>

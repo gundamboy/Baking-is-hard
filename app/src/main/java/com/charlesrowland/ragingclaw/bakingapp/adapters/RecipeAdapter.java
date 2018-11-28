@@ -1,5 +1,7 @@
 package com.charlesrowland.ragingclaw.bakingapp.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,16 +12,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.charlesrowland.ragingclaw.bakingapp.R;
+import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
+import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHolder> {
 
-    ArrayList<Recipe> mRecipeList;
+    private final Context mContext;
+    private final ArrayList<Recipe> mRecipeList;
+    private List<Ingredient> mIngredientList;
+    private String mJsonResult;
+    private String mRecipeJson;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
@@ -30,8 +42,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         mListener = listener;
     }
 
-    public RecipeAdapter(ArrayList<Recipe> mRecipeList) {
+    public RecipeAdapter(Context mContext, ArrayList<Recipe> mRecipeList, String mJsonResult) {
+        this.mContext = mContext;
         this.mRecipeList = mRecipeList;
+        this.mJsonResult = mJsonResult;
     }
 
     @NonNull
@@ -42,13 +56,37 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeHolder holder, int i) {
+    public void onBindViewHolder(@NonNull RecipeHolder holder, int position) {
         Resources res = holder.itemView.getContext().getResources();
+
+        holder.name.setText(mRecipeList.get(position).getName());
+
+        String servingsText = res.getString(R.string.servings_text) + " " + String.valueOf(mRecipeList.get(position).getServings());
+        holder.servings.setText(servingsText);
+
+        mIngredientList = mRecipeList.get(position).getIngredients();
+        String ingredientsText = res.getString(R.string.ingredients_text) + " " + String.valueOf(mIngredientList.size());
+        holder.ingredientsCount.setText(ingredientsText);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Recipe recipe = mRecipeList.get(holder.getAdapterPosition());
+                ArrayList<Recipe> currentRecipeArrayList = new ArrayList<>();
+                currentRecipeArrayList.add(recipe);
+                mRecipeJson = jsonToString(mJsonResult, holder.getAdapterPosition());
+
+//                Intent intent = new Intent(mContext, RecipeDetailActivity.class);
+//                intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA, currentRecipeArrayList);
+//                intent.putExtra(AllMyConstants.RECIPE_INTENT_JSON_EXTRA, mRecipeJson);
+//                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mRecipeList.size();
     }
 
     class RecipeHolder extends RecyclerView.ViewHolder {
@@ -61,5 +99,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    // this turns the selected recipe json into a string.
+    // momma always said, "work smarter, not harder"
+    // ok she didn't actually say that but whatever, it's not wrong.
+    private String jsonToString(String jsonResult, int position) {
+        JsonElement jsonElement = new JsonParser().parse(jsonResult);
+        JsonArray jsonArray = jsonElement.getAsJsonArray();
+        JsonElement recipeJsonElement = jsonArray.get(position);
+        return recipeJsonElement.toString();
     }
 }

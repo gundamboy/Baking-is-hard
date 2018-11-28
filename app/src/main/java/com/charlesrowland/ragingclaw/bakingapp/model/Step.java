@@ -65,7 +65,6 @@ public class Step implements Parcelable {
         this.thumbnailURL = thumbnailURL;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
