@@ -1,0 +1,49 @@
+<resources>
+    <dimen name="baseline_0">0dp</dimen>
+    <dimen name="baseline_4">4dp</dimen>
+    <dimen name="baseline_8">8dp</dimen>
+    <dimen name="baseline_14">14dp</dimen>
+    <dimen name="baseline_16">16dp</dimen>
+    <dimen name="margins_2">2dp</dimen>
+    <dimen name="margins_4">4dp</dimen>
+    <dimen name="margins_8">8dp</dimen>
+    <dimen name="margins_12">12dp</dimen>
+    <dimen name="margins_14">14dp</dimen>
+    <dimen name="margins_16">16dp</dimen>
+    <dimen name="margins_18">18dp</dimen>
+    <dimen name="margins_20">20dp</dimen>
+    <dimen name="margins_24">24dp</dimen>
+
+    <dimen name="margins_text_match_dots">48dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="sheet_text_scrim_height_top">100dp</dimen>
+    <dimen name="sheet_text_scrim_height_bottom">100dp</dimen>
+    <dimen name="details_movie_poster_width">105dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="expand_title_margin">16dp</dimen>
+    <dimen name="text0">0sp</dimen>
+    <dimen name="text08">8sp</dimen>
+    <dimen name="text10">10sp</dimen>
+    <dimen name="text12">12sp</dimen>
+    <dimen name="text14">14sp</dimen>
+    <dimen name="text16">16sp</dimen>
+    <dimen name="text18">18sp</dimen>
+    <dimen name="text20">20sp</dimen>
+    <dimen name="text24">24sp</dimen>
+    <dimen name="text26">26sp</dimen>
+    <dimen name="text28">28sp</dimen>
+    <dimen name="text32">32sp</dimen>
+    <dimen name="text45">45sp</dimen>
+
+    <!--this is to avoid colliding with the floating poster in the details view -->
+    <dimen name="details_poster_push_margin_start">125dp</dimen>
+    <dimen name="title_bar_height">40dp</dimen>
+    <dimen name="margin_28">28dp</dimen>
+    <dimen name="title_screen_credits_bar_height">1dp</dimen>
+    <dimen name="margin_60">60dp</dimen>
+    <dimen name="title_screen_app_name_size">54sp</dimen>
+    <dimen name="camera_image_width">132dp</dimen>
+    <dimen name="camera_image_height">215dp</dimen>
+    <dimen name="review_bottom_sheet_height">350dp</dimen>
+</resources>

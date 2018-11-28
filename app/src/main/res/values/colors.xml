@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#a97c51</color>
+    <color name="colorPrimaryDark">#d3af9d</color>
+    <color name="colorAccent">#f38366</color>
+    <color name="windowBackground">#fee3d3</color>
+    <color name="textColorPrimary">#fefefe</color>
+    <color name="statusBarText">#716558</color>
+    <color name="primaryTextColor">#716558</color>
+    <color name="cardBackground">#fefefe</color>
+</resources>
