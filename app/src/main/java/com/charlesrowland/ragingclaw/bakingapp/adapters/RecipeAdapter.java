@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.charlesrowland.ragingclaw.bakingapp.R;
+import com.charlesrowland.ragingclaw.bakingapp.StepDetailActivity;
 import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
 import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
@@ -76,10 +77,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
                 currentRecipeArrayList.add(recipe);
                 mRecipeJson = jsonToString(mJsonResult, holder.getAdapterPosition());
 
-//                Intent intent = new Intent(mContext, RecipeDetailActivity.class);
-//                intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA, currentRecipeArrayList);
-//                intent.putExtra(AllMyConstants.RECIPE_INTENT_JSON_EXTRA, mRecipeJson);
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, StepDetailActivity.class);
+                intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA, currentRecipeArrayList);
+                intent.putExtra(AllMyConstants.RECIPE_INTENT_JSON_EXTRA, mRecipeJson);
+                mContext.startActivity(intent);
             }
         });
     }

@@ -4,4 +4,6 @@
     <string name="no_results">It looks like there are no delicious recipes to show at this time.</string>
     <string name="servings_text">Servings: </string>
     <string name="ingredients_text">Total Ingredients: </string>
+    <string name="title_step_list">Steps</string>
+    <string name="title_step_detail">Step Detail</string>
 </resources>
