@@ -18,8 +18,15 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import com.charlesrowland.ragingclaw.bakingapp.dummy.DummyContent;
+import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
+import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
+import com.charlesrowland.ragingclaw.bakingapp.model.Step;
+import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * An activity representing a list of Steps. This activity
@@ -31,10 +38,10 @@ import java.util.List;
  */
 public class StepListActivity extends AppCompatActivity {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
+    private ArrayList<Recipe> mRecipeArrayList;
+    private List<Ingredient> mIngredientList = new ArrayList<>();
+    private List<Step> mStepList = new ArrayList<>();
+
     private boolean mTwoPane;
 
     @Override
@@ -59,6 +66,19 @@ public class StepListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        Intent recipeIntent = getIntent();
+
+        if (recipeIntent != null && recipeIntent.hasExtra(AllMyConstants.RECIPE_INTENT_EXTRA)) {
+            mRecipeArrayList = recipeIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA);
+            mIngredientList = mRecipeArrayList.get(0).getIngredients();
+            mStepList = mRecipeArrayList.get(0).getSteps();
+            Timber.v("we are in business with this intent stuff. name: %s", mRecipeArrayList.get(0).getName());
+            Timber.v("ingredients size: %s", mIngredientList.size());
+            Timber.v("steps size: %s", mStepList.size());
+        }
+
+
 
         View recyclerView = findViewById(R.id.step_list);
         assert recyclerView != null;
