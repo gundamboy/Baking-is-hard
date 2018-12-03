@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.charlesrowland.ragingclaw.bakingapp.R;
 import com.charlesrowland.ragingclaw.bakingapp.StepListActivity;
@@ -12,6 +13,7 @@ import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientHolder> {
@@ -31,7 +33,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public void onBindViewHolder(@NonNull IngredientHolder holder, int position) {
+        String ingredientAmount = String.valueOf(mIngredientList.get(position).getQuantity());
+        String ingredientMeasure = mIngredientList.get(position).getMeasure();
+        String ingredientDescription = mIngredientList.get(position).getIngredient();
 
+        holder.ingreientAmount.setText(ingredientAmount);
+        holder.ingreientMeasurement.setText(ingredientMeasure);
+        holder.ingredientDescription.setText(ingredientDescription);
     }
 
     @Override
@@ -40,7 +48,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
     class IngredientHolder extends RecyclerView.ViewHolder {
-
+        @BindView(R.id.ingredientAmount) TextView ingreientAmount;
+        @BindView(R.id.ingredientMeasurement) TextView ingreientMeasurement;
+        @BindView(R.id.ingredientDescription) TextView ingredientDescription;
 
         public IngredientHolder(@NonNull View itemView) {
             super(itemView);
