@@ -1,39 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CardView.Light"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:baselineAligned="false"
-    android:divider="?android:attr/dividerHorizontal"
-    android:orientation="horizontal"
-    android:showDividers="middle"
-    tools:context=".StepListActivity">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margins_8">
 
-    <!--
-    This layout is a two-pane layout for the Steps
-    master/detail flow.
-    
-    -->
+    <TextView
+        android:id="@+id/stepsInstructionsHeader"
+        style="@style/StepsListItemText"
+        android:layout_width="@dimen/item_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/steps_instructions_header"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/step_list"
         android:name="com.charlesrowland.ragingclaw.bakingapp.StepListFragment"
         android:layout_width="@dimen/item_width"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stepsInstructionsHeader"
+        tools:context=".StepListActivity"
+        tools:itemCount="9"
         tools:layoutManager="LinearLayoutManager"
-        tools:context="com.charlesrowland.ragingclaw.bakingapp.StepListActivity"
-        tools:listitem="@layout/step_list_content" />
+        tools:listitem="@layout/step_list_item" />
 
     <FrameLayout
         android:id="@+id/step_detail_container"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="3" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/step_list"
+        app:layout_constraintTop_toTopOf="parent"  />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
