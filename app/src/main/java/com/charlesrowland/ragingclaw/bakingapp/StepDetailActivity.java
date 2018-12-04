@@ -2,12 +2,10 @@ package com.charlesrowland.ragingclaw.bakingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 import android.view.MenuItem;
 
 /**
@@ -55,6 +53,12 @@ public class StepDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
+            // This ID represents the Home or Up button. In the case of this
+            // activity, the Up button is shown. For
+            // more details, see the Navigation pattern on Android Design:
+            //
+            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            //
             navigateUpTo(new Intent(this, StepListActivity.class));
             return true;
         }

@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/CardView.Light"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margins_8"
-    android:layout_marginStart="@dimen/margins_8"
-    android:layout_marginEnd="@dimen/margins_8">
+    android:layout_marginBottom="@dimen/margins_8">
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/ingredient_amount_block_width"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/ingredientAmount"
                 style="@style/RecipeListItemTitleText"
-                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margins_8"
                 tools:text="2" />
 
             <TextView
@@ -36,22 +32,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/margins_8"
                 tools:text="Cups" />
         </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margins_8"
+            android:layout_marginBottom="@dimen/margins_8"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/ingredientDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/margins_8"
+            android:layout_marginTop="@dimen/margins_8"
+            android:layout_marginBottom="@dimen/margins_8"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout"
+            app:layout_constraintStart_toEndOf="@+id/view"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Graham Cracker crumbs" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

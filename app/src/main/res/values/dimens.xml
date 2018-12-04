@@ -48,4 +48,7 @@
     <dimen name="review_bottom_sheet_height">350dp</dimen>
     <dimen name="item_width">320dp</dimen>
     <dimen name="steps_item_width_landscape">280dp</dimen>
+    <dimen name="ingredient_amount_block_width">50dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="play_circle_dimen">24dp</dimen>
 </resources>

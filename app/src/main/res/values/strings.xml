@@ -2,9 +2,12 @@
     <string name="app_name">Baking App</string>
     <string name="no_internet">It looks like you don\'t have an internet connection. You get no delicious recipes.</string>
     <string name="no_results">It looks like there are no delicious recipes to show at this time.</string>
-    <string name="servings_text">Servings: </string>
-    <string name="ingredients_text">Total Ingredients: </string>
-    <string name="title_step_list">Steps</string>
-    <string name="title_step_detail">Step Detail</string>
+    <string name="recipes_header_text">Recipes</string>
+    <string name="servings_text">Servings:</string>
+    <string name="ingredients_text">Total Ingredients:</string>
+    <string name="title_ingredients_list">%1$s Ingredients</string>
+    <string name="title_step_list">%1$s Steps</string>
+    <string name="title_step_detail">%1$s Step %2$d</string>
     <string name="steps_instructions_header">Click on a step to see detailed information.</string>
+    <string name="start_baking_text">Start Baking</string>
 </resources>

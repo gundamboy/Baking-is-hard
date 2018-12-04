@@ -3,16 +3,14 @@ package com.charlesrowland.ragingclaw.bakingapp.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.charlesrowland.ragingclaw.bakingapp.R;
-import com.charlesrowland.ragingclaw.bakingapp.StepDetailActivity;
 import com.charlesrowland.ragingclaw.bakingapp.StepListActivity;
 import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
@@ -34,6 +32,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     private List<Ingredient> mIngredientList;
     private String mJsonResult;
     private String mRecipeJson;
+    private Boolean mTwoPane;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
@@ -44,10 +43,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         mListener = listener;
     }
 
-    public RecipeAdapter(Context mContext, ArrayList<Recipe> mRecipeList, String mJsonResult) {
+    public RecipeAdapter(Context mContext, ArrayList<Recipe> mRecipeList, String mJsonResult, Boolean mTwoPane) {
         this.mContext = mContext;
         this.mRecipeList = mRecipeList;
         this.mJsonResult = mJsonResult;
+        this.mTwoPane = mTwoPane;
     }
 
     @NonNull
@@ -78,7 +78,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
                 currentRecipeArrayList.add(recipe);
                 mRecipeJson = jsonToString(mJsonResult, holder.getAdapterPosition());
 
-                Intent intent = new Intent(mContext, StepListActivity.class);
+                Intent intent;
+                if (mTwoPane) {
+                    intent = new Intent(mContext, StepListActivity.class);
+                } else {
+                    intent = new Intent(mContext, StepListActivity.class);
+                }
                 intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA, currentRecipeArrayList);
                 intent.putExtra(AllMyConstants.RECIPE_INTENT_JSON_EXTRA, mRecipeJson);
                 mContext.startActivity(intent);

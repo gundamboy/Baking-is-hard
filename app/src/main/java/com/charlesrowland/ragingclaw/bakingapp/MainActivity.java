@@ -2,16 +2,20 @@ package com.charlesrowland.ragingclaw.bakingapp;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Parcelable;
 import android.view.View;
 
 import com.charlesrowland.ragingclaw.bakingapp.adapters.RecipeAdapter;
 import com.charlesrowland.ragingclaw.bakingapp.interfaces.RecipeService;
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
 import com.charlesrowland.ragingclaw.bakingapp.network.RecipeClient;
+import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
 import com.charlesrowland.ragingclaw.bakingapp.utils.NetworkUtils;
 import com.google.gson.Gson;
 
@@ -29,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private RecipeAdapter mRecipeAdapter;
     private ArrayList<Recipe> mRecipeList = new ArrayList<>();
     private String mRecipeJsonResult;
+    private Boolean mTwoPane;
+    private Parcelable mRecipeState;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @BindView(R.id.recipeRecyclerView) RecyclerView mRecipeRecyclerView;
     @BindView(R.id.emptyViews) View mEmptyView;
@@ -37,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        setTitle(getString(R.string.recipes_header_text));
         ButterKnife.bind(this);
 
         // only log if this is not a production build
@@ -46,15 +53,24 @@ public class MainActivity extends AppCompatActivity {
             Timber.plant(new Timber.DebugTree());
         }
 
+        if (!NetworkUtils.isOnline(this)) {
+            showEmptyView();
+            return;
+        }
+
+        if (findViewById(R.id.recipeListImageView) != null) {
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        }
+
         if (savedInstanceState != null) {
-            // TODO: add save/restore instancestate methods and implement them
+            mRecipeList = savedInstanceState.getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
+            mRecipeJsonResult = savedInstanceState.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE);
+            attachAdapter();
         } else {
-            if (NetworkUtils.isOnline(this)) {
-                mRecipeService = new RecipeClient().mRecipeService;
-                new FetchRecipesAsync().execute();
-            } else {
-                showEmptyView();
-            }
+            mRecipeService = new RecipeClient().mRecipeService;
+            new FetchRecipesAsync().execute();
         }
 
     }
@@ -93,13 +109,11 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
                 mRecipeList = response.body();
                 mRecipeJsonResult = new Gson().toJson(response.body());
-                mRecipeAdapter = new RecipeAdapter(MainActivity.this, mRecipeList, mRecipeJsonResult);
-
-                RecyclerView.LayoutManager mLayoutManager;
+                mRecipeAdapter = new RecipeAdapter(MainActivity.this, mRecipeList, mRecipeJsonResult, mTwoPane);
                 mLayoutManager = new LinearLayoutManager(MainActivity.this);
                 mRecipeRecyclerView.setLayoutManager(mLayoutManager);
+                mRecipeRecyclerView.setHasFixedSize(true);
                 mRecipeRecyclerView.setAdapter(mRecipeAdapter);
-
             }
 
             @Override
@@ -107,5 +121,33 @@ public class MainActivity extends AppCompatActivity {
                 Timber.e("OH CRAP! ERROR: %s", t.toString());
             }
         });
+    }
+
+    private void attachAdapter() {
+        mRecipeAdapter = new RecipeAdapter(MainActivity.this, mRecipeList, mRecipeJsonResult, mTwoPane);
+        mRecipeRecyclerView.setAdapter(mRecipeAdapter);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mRecipeState = mLayoutManager.onSaveInstanceState();
+        outState.putParcelable(AllMyConstants.RECIPE_RECYCLER_STATE, mRecipeState);
+        outState.putString(AllMyConstants.RECIPE_JSON_RESULT_STATE, mRecipeJsonResult);;
+
+        if (mRecipeList != null) {
+            outState.putParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE, new ArrayList<>(mRecipeList));
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mRecipeState = savedInstanceState.getParcelable(AllMyConstants.RECIPE_RECYCLER_STATE);
+        mRecipeJsonResult = savedInstanceState.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE);
+
+        if (savedInstanceState.getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE) != null) {
+            mRecipeList = savedInstanceState.getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
+        }
     }
 }
