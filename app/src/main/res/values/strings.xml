@@ -7,7 +7,7 @@
     <string name="ingredients_text">Total Ingredients:</string>
     <string name="title_ingredients_list">%1$s Ingredients</string>
     <string name="title_step_list">%1$s Steps</string>
-    <string name="title_step_detail">%1$s Step %2$d</string>
+    <string name="title_step_detail">%1$s Step %2$s</string>
     <string name="steps_instructions_header">Click on a step to see detailed information.</string>
     <string name="start_baking_text">Start Baking</string>
 </resources>

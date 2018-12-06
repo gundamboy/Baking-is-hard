@@ -1,5 +1,7 @@
 package com.charlesrowland.ragingclaw.bakingapp.adapters;
 
+import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.charlesrowland.ragingclaw.bakingapp.IngredientsActivity;
 import com.charlesrowland.ragingclaw.bakingapp.R;
 import com.charlesrowland.ragingclaw.bakingapp.StepListActivity;
 import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
@@ -82,7 +85,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
                 if (mTwoPane) {
                     intent = new Intent(mContext, StepListActivity.class);
                 } else {
-                    intent = new Intent(mContext, StepListActivity.class);
+                    intent = new Intent(mContext, IngredientsActivity.class);
                 }
                 intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA, currentRecipeArrayList);
                 intent.putExtra(AllMyConstants.RECIPE_INTENT_JSON_EXTRA, mRecipeJson);

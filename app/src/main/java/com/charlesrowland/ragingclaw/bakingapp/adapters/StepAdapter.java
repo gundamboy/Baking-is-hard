@@ -14,7 +14,9 @@ import com.charlesrowland.ragingclaw.bakingapp.R;
 import com.charlesrowland.ragingclaw.bakingapp.StepDetailActivity;
 import com.charlesrowland.ragingclaw.bakingapp.StepDetailFragment;
 import com.charlesrowland.ragingclaw.bakingapp.StepListActivity;
+import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
 import com.charlesrowland.ragingclaw.bakingapp.model.Step;
+import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
+    private ArrayList<Recipe> mRecipeArrayList;
     private final ArrayList<Step> mStepList;
     private final StepListActivity mParentActivity;
     private final boolean mTwoPane;
@@ -32,7 +35,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
             Step item = (Step) view.getTag();
             if(mTwoPane) {
                 Bundle arguments = new Bundle();
-                arguments.putString(StepDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
+                arguments.putString(AllMyConstants.ARG_ITEM_ID, String.valueOf(item.getId()));
+                arguments.putParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE, mRecipeArrayList);
                 StepDetailFragment fragment = new StepDetailFragment();
                 fragment.setArguments(arguments);
                 mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -41,16 +45,17 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
             } else {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, StepDetailActivity.class);
-                intent.putExtra(StepDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
+                intent.putExtra(AllMyConstants.ARG_ITEM_ID, String.valueOf(item.getId()));
+                intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_ARRAYLIST_STATE, mRecipeArrayList);
 
                 context.startActivity(intent);
             }
-
         }
     };
 
-    public StepAdapter(StepListActivity parent, ArrayList<Step> mStepList, Boolean mTwoPane) {
+    public StepAdapter(StepListActivity parent, ArrayList<Step> mStepList, ArrayList<Recipe> mRecipeArrayList, Boolean mTwoPane) {
         this.mParentActivity = parent;
+        this.mRecipeArrayList = mRecipeArrayList;
         this.mStepList = mStepList;
         this.mTwoPane = mTwoPane;
     }

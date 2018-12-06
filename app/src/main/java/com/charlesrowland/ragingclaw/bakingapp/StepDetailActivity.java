@@ -8,6 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
 import android.view.MenuItem;
 
+import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
+import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
+
+import java.util.ArrayList;
+
 /**
  * An activity representing a single Step detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
@@ -15,6 +20,7 @@ import android.view.MenuItem;
  * in a {@link StepListActivity}.
  */
 public class StepDetailActivity extends AppCompatActivity {
+    private ArrayList<Recipe> mRecipeArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +44,19 @@ public class StepDetailActivity extends AppCompatActivity {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
+
+        Intent recipeIntent = getIntent();
+
+        if (recipeIntent != null && recipeIntent.hasExtra(AllMyConstants.RECIPE_ARRAYLIST_STATE)) {
+            mRecipeArrayList = recipeIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_ARRAYLIST_STATE);
+        }
+
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(StepDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(StepDetailFragment.ARG_ITEM_ID));
+            arguments.putString(AllMyConstants.ARG_ITEM_ID, getIntent().getStringExtra(AllMyConstants.ARG_ITEM_ID));
+            arguments.putParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE, mRecipeArrayList);
             StepDetailFragment fragment = new StepDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction().add(R.id.step_detail_container, fragment).commit();

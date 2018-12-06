@@ -13,6 +13,7 @@ import timber.log.Timber;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import com.charlesrowland.ragingclaw.bakingapp.adapters.IngredientAdapter;
@@ -28,7 +29,6 @@ import java.util.List;
 public class IngredientsActivity extends AppCompatActivity {
     private ArrayList<Recipe> mRecipeArrayList;
     private List<Ingredient> mIngredientList = new ArrayList<>();
-    private List<Step> mStepList = new ArrayList<>();
     private IngredientAdapter mIngredientAdapter;
 
     @BindView(R.id.ingredient_list) RecyclerView mIngredientRecyclerView;
@@ -47,17 +47,29 @@ public class IngredientsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Intent recipeIntent = getIntent();
+        Intent ingredientIntent = getIntent();
 
-        if (recipeIntent != null && recipeIntent.hasExtra(AllMyConstants.RECIPE_INTENT_EXTRA)) {
-            mRecipeArrayList = recipeIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA);
+        if (ingredientIntent != null && ingredientIntent.hasExtra(AllMyConstants.RECIPE_INTENT_EXTRA)) {
+            Timber.v("ingredientIntent != null and has intent extra");
+            mRecipeArrayList = ingredientIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA);
             mIngredientList = mRecipeArrayList.get(0).getIngredients();
-            mStepList = mRecipeArrayList.get(0).getSteps();
             actionBar.setTitle(getString(R.string.title_ingredients_list, mRecipeArrayList.get(0).getName()));
+        } else {
+            // TODO: add crash prevention if intent is missing
         }
 
         assert mIngredientRecyclerView != null;
         setupRecyclerView(mIngredientRecyclerView);
+
+        mStartBakingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(getApplicationContext(), StepListActivity.class);
+                intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA, mRecipeArrayList);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -86,4 +98,7 @@ public class IngredientsActivity extends AppCompatActivity {
         mIngredientAdapter = new IngredientAdapter(this, (ArrayList<Ingredient>) mIngredientList);
         recyclerView.setAdapter(mIngredientAdapter);
     }
+
+    // TODO: implement saved/restore instance state methods
+    // TODO: implement on resume method
 }

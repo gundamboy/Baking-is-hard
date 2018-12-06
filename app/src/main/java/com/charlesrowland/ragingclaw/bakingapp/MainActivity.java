@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private RecipeAdapter mRecipeAdapter;
     private ArrayList<Recipe> mRecipeList = new ArrayList<>();
     private String mRecipeJsonResult;
-    private Boolean mTwoPane;
+    private Boolean mTwoPane = false;
     private Parcelable mRecipeState;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -64,11 +64,16 @@ public class MainActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
+        mLayoutManager = new LinearLayoutManager(MainActivity.this);
+
         if (savedInstanceState != null) {
+            Timber.v("onCreate savedInstanceState =! null");
             mRecipeList = savedInstanceState.getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
             mRecipeJsonResult = savedInstanceState.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE);
             attachAdapter();
+            HideEmptyView();
         } else {
+            Timber.v("onCreate savedInstanceState == null");
             mRecipeService = new RecipeClient().mRecipeService;
             new FetchRecipesAsync().execute();
         }
@@ -124,16 +129,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void attachAdapter() {
+        Timber.v("attachAdapter");
         mRecipeAdapter = new RecipeAdapter(MainActivity.this, mRecipeList, mRecipeJsonResult, mTwoPane);
         mRecipeRecyclerView.setAdapter(mRecipeAdapter);
+        mRecipeRecyclerView.setLayoutManager(mLayoutManager);
+        mRecipeAdapter.notifyDataSetChanged();
+
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        Timber.v("onSaveInstanceState");
         mRecipeState = mLayoutManager.onSaveInstanceState();
         outState.putParcelable(AllMyConstants.RECIPE_RECYCLER_STATE, mRecipeState);
-        outState.putString(AllMyConstants.RECIPE_JSON_RESULT_STATE, mRecipeJsonResult);;
+        outState.putString(AllMyConstants.RECIPE_JSON_RESULT_STATE, mRecipeJsonResult);
 
         if (mRecipeList != null) {
             outState.putParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE, new ArrayList<>(mRecipeList));
@@ -143,11 +153,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        Timber.v("onRestoreInstanceState");
         mRecipeState = savedInstanceState.getParcelable(AllMyConstants.RECIPE_RECYCLER_STATE);
         mRecipeJsonResult = savedInstanceState.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE);
 
         if (savedInstanceState.getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE) != null) {
             mRecipeList = savedInstanceState.getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
         }
+    }
+
+    // TODO: implement on resume method
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

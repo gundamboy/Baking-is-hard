@@ -7,7 +7,9 @@ public class AllMyConstants {
     public final static String RECIPE_ARRAYLIST_STATE = "recipe_arraylist_state";
     public final static String RECIPE_JSON_RESULT_STATE = "recipe_json_result_state";
     public final static String RECIPE_JSON_STATE = "recipe_json_state";
+    public final static String RECIPE_NAME_EXTRA = "recipe_name_extra";
     public final static String RECIPE_INTENT_EXTRA = "recipe_intent_extra";
     public final static String RECIPE_INTENT_JSON_EXTRA = "recipe_intent_json_extra";
     public final static String INGREDIENTS_RECYCLER_STATE = "ingredients_recycler_state";
+    public static final String ARG_ITEM_ID = "item_id";
 }

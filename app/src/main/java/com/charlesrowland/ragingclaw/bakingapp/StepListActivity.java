@@ -77,10 +77,7 @@ public class StepListActivity extends AppCompatActivity {
             mRecipeArrayList = recipeIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA);
             mIngredientList = mRecipeArrayList.get(0).getIngredients();
             mStepList = mRecipeArrayList.get(0).getSteps();
-            toolbar.setTitle(getString(R.string.title_step_list, mRecipeArrayList.get(0).getName()));
-            Timber.v("we are in business with this intent stuff. name: %s", mRecipeArrayList.get(0).getName());
-            Timber.v("ingredients size: %s", mIngredientList.size());
-            Timber.v("steps size: %s", mStepList.size());
+            actionBar.setTitle(getString(R.string.title_step_list, mRecipeArrayList.get(0).getName()));
         }
 
         assert mStepsRecyclerView != null;
@@ -111,7 +108,7 @@ public class StepListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        mStepAdapter = new StepAdapter(this, (ArrayList<Step>) mStepList, mTwoPane);
+        mStepAdapter = new StepAdapter(this, (ArrayList<Step>) mStepList, mRecipeArrayList, mTwoPane);
         recyclerView.setAdapter(mStepAdapter);
     }
 }
