@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
+import timber.log.Timber;
+
 import android.view.MenuItem;
 
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
@@ -28,6 +30,7 @@ public class StepDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_step_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
+        Timber.v("in step details activity");
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -73,6 +76,7 @@ public class StepDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
+
             navigateUpTo(new Intent(this, StepListActivity.class));
             return true;
         }

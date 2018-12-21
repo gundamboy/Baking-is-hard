@@ -17,10 +17,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.charlesrowland.ragingclaw.bakingapp.adapters.IngredientAdapter;
-import com.charlesrowland.ragingclaw.bakingapp.adapters.StepAdapter;
 import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
-import com.charlesrowland.ragingclaw.bakingapp.model.Step;
 import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
 
 import java.util.ArrayList;
