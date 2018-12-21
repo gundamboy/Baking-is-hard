@@ -27,7 +27,7 @@
         android:layout_marginEnd="@dimen/margins_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stepsInstructionsHeader"
-        tools:context=".StepListActivity"
+        tools:context=".StepActivity"
         tools:itemCount="9"
         tools:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/step_list_item" />

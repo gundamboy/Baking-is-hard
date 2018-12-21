@@ -17,10 +17,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.charlesrowland.ragingclaw.bakingapp.adapters.IngredientAdapter;
-import com.charlesrowland.ragingclaw.bakingapp.adapters.StepAdapter;
 import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
-import com.charlesrowland.ragingclaw.bakingapp.model.Step;
 import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
 
 import java.util.ArrayList;
@@ -65,7 +63,7 @@ public class IngredientsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent;
-                intent = new Intent(getApplicationContext(), StepListActivity.class);
+                intent = new Intent(getApplicationContext(), StepActivity.class);
                 intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA, mRecipeArrayList);
                 startActivity(intent);
             }

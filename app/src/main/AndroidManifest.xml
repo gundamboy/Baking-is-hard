@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StepListActivity"
+            android:name=".StepActivity"
             android:label="@string/title_step_list"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -32,11 +32,11 @@
         <activity
             android:name=".StepDetailActivity"
             android:label="@string/title_step_detail"
-            android:parentActivityName=".StepListActivity"
+            android:parentActivityName=".StepActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.charlesrowland.ragingclaw.bakingapp.StepListActivity" />
+                android:value="com.charlesrowland.ragingclaw.bakingapp.StepActivity" />
         </activity>
         <activity android:name=".IngredientsActivity"></activity>
     </application>

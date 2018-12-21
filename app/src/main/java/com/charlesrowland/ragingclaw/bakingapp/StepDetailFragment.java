@@ -8,21 +8,17 @@ import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import timber.log.Timber;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.charlesrowland.ragingclaw.bakingapp.dummy.DummyContent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A fragment representing a single Step detail screen.
- * This fragment is either contained in a {@link StepListActivity}
+ * This fragment is either contained in a {@link StepActivity}
  * in two-pane mode (on tablets) or a {@link StepDetailActivity}
  * on handsets.
  */
@@ -64,7 +60,6 @@ public class StepDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.step_detail, container, false);
-        // TODO: need to create the step_detail.xml layout
         // TODO add video player fragment
         // TODO: create video player
 

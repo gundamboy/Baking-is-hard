@@ -3,7 +3,6 @@ package com.charlesrowland.ragingclaw.bakingapp.adapters;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import com.charlesrowland.ragingclaw.bakingapp.IngredientsActivity;
 import com.charlesrowland.ragingclaw.bakingapp.R;
-import com.charlesrowland.ragingclaw.bakingapp.StepListActivity;
 import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
 
 import java.util.ArrayList;

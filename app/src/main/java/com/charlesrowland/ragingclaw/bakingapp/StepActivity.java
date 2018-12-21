@@ -1,14 +1,18 @@
 package com.charlesrowland.ragingclaw.bakingapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 import androidx.appcompat.app.ActionBar;
+
+import android.os.Parcelable;
 import android.view.MenuItem;
 
 import com.charlesrowland.ragingclaw.bakingapp.adapters.StepAdapter;
@@ -33,15 +37,13 @@ import timber.log.Timber;
  * item details side-by-side using two vertical panes.
  */
 
-// TODO: make PagerAdapter and setup tabs for steps/ingredients
-// TODO: video player fragment
-// TODO: video player
-public class StepListActivity extends AppCompatActivity {
+public class StepActivity extends AppCompatActivity {
 
     private ArrayList<Recipe> mRecipeArrayList;
     private List<Ingredient> mIngredientList = new ArrayList<>();
-    private List<Step> mStepList = new ArrayList<>();
+    private ArrayList<Step> mStepList = new ArrayList<>();
     private StepAdapter mStepAdapter;
+    private int mVideoNumber = 0;
 
     private boolean mTwoPane;
 
@@ -71,18 +73,37 @@ public class StepListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        Intent recipeIntent = getIntent();
+        if (savedInstanceState != null) {
+           mStepList = savedInstanceState.getParcelableArrayList(AllMyConstants.STEPS_ARRAYLIST_STATE);
+           mVideoNumber = savedInstanceState.getInt(AllMyConstants.STEP_NUMBER);
+        } else {
+            Intent recipeIntent = getIntent();
+            if (recipeIntent != null && recipeIntent.hasExtra(AllMyConstants.RECIPE_INTENT_EXTRA)) {
+                mRecipeArrayList = recipeIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA);
+                mIngredientList = mRecipeArrayList.get(0).getIngredients();
+                mStepList = (ArrayList<Step>) mRecipeArrayList.get(0).getSteps();
+                actionBar.setTitle(getString(R.string.title_step_list, mRecipeArrayList.get(0).getName()));
 
-        if (recipeIntent != null && recipeIntent.hasExtra(AllMyConstants.RECIPE_INTENT_EXTRA)) {
-            mRecipeArrayList = recipeIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA);
-            mIngredientList = mRecipeArrayList.get(0).getIngredients();
-            mStepList = mRecipeArrayList.get(0).getSteps();
-            actionBar.setTitle(getString(R.string.title_step_list, mRecipeArrayList.get(0).getName()));
+            }
         }
 
         assert mStepsRecyclerView != null;
         setupRecyclerView(mStepsRecyclerView);
 
+        if (mTwoPane) {
+            playerVideo(mStepList, mVideoNumber);
+        }
+    }
+
+    public void playerVideo(List<Step> stepList, int videoNumber) {
+        VideoFragment videoFragment = new VideoFragment();
+        Bundle arguments = new Bundle();
+        arguments.putParcelableArrayList(AllMyConstants.STEPS_ARRAYLIST_STATE, (ArrayList<? extends Parcelable>) stepList);
+        arguments.putInt(AllMyConstants.STEP_NUMBER, videoNumber);
+        videoFragment.setArguments(arguments);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.video_layout_container, videoFragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -104,7 +125,7 @@ public class StepListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         RecyclerView.LayoutManager mLayoutManager;
-        mLayoutManager = new LinearLayoutManager(StepListActivity.this);
+        mLayoutManager = new LinearLayoutManager(StepActivity.this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 

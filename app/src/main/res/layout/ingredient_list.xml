@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:context=".StepListActivity"
+            tools:context=".StepActivity"
             tools:itemCount="6"
             tools:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/ingredient_list_item" />
