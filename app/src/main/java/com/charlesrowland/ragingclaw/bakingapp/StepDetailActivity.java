@@ -107,7 +107,6 @@ public class StepDetailActivity extends AppCompatActivity {
             Timber.i("fart: video url: %s", mCurrentStep.getVideoURL());
             Timber.i("fart: description: %s", mCurrentStep.getDescription());
 
-            initializePlayer(mVideoUri);
 
             if (actionBar != null) {
                 actionBar.setTitle(getString(R.string.title_step_detail, mCurrentRecipe.getName(), String.valueOf(mStepNumber)));
@@ -115,11 +114,17 @@ public class StepDetailActivity extends AppCompatActivity {
 
         }
 
-        if (savedInstanceState == null) {
-
+        if (savedInstanceState != null) {
+            mCurrentStep = savedInstanceState.getParcelable(AllMyConstants.STEP_SINGLE);
+            mShouldPlayWhenReady = savedInstanceState.getBoolean(AllMyConstants.STEP_PLAY_WHEN_READY);
+            mPlayerPosition = savedInstanceState.getLong(AllMyConstants.STEP_VIDEO_POSITION);
+            mWindowIndex = savedInstanceState.getInt(AllMyConstants.STEP_PLAY_WINDOW_INDEX);
+            mVideoUri = Uri.parse(savedInstanceState.getString(AllMyConstants.STEP_URI));
         } else {
 
         }
+
+        initializePlayer(mVideoUri);
     }
 
     public void initializePlayer(Uri videoUrl) {
@@ -166,6 +171,14 @@ public class StepDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            initializePlayer(mVideoUri);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (Util.SDK_INT <= 23 || mSimplePlayer == null) {
@@ -174,6 +187,17 @@ public class StepDetailActivity extends AppCompatActivity {
         if(mSimplePlayer != null){
             mSimplePlayer.setPlayWhenReady(mShouldPlayWhenReady);
             mSimplePlayer.seekTo(mPlayerPosition);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mSimplePlayer != null){
+            updateStartPosition();
+            if (Util.SDK_INT <= 23) {
+                releasePlayer();
+            }
         }
     }
 
