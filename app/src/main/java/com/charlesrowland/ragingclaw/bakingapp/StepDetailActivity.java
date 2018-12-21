@@ -21,6 +21,7 @@ import java.util.ArrayList;
  */
 public class StepDetailActivity extends AppCompatActivity {
     private ArrayList<Recipe> mRecipeArrayList;
+    private Boolean hasIntent = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class StepDetailActivity extends AppCompatActivity {
 
         if (recipeIntent != null && recipeIntent.hasExtra(AllMyConstants.RECIPE_ARRAYLIST_STATE)) {
             mRecipeArrayList = recipeIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_ARRAYLIST_STATE);
+            hasIntent = true;
         }
 
         if (savedInstanceState == null) {
@@ -73,7 +75,11 @@ public class StepDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, StepListActivity.class));
+
+            Intent intent = new Intent(this, StepDetailActivity.class);
+            intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA, mRecipeArrayList);
+            navigateUpTo(intent);
+
             return true;
         }
         return super.onOptionsItemSelected(item);

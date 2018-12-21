@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
     private ArrayList<Recipe> mRecipeArrayList;
@@ -33,6 +34,9 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         @Override
         public void onClick(View view) {
             Step item = (Step) view.getTag();
+
+            Timber.i("mTowpane is: %s", mTwoPane);
+
             if(mTwoPane) {
                 Bundle arguments = new Bundle();
                 arguments.putString(AllMyConstants.ARG_ITEM_ID, String.valueOf(item.getId()));
