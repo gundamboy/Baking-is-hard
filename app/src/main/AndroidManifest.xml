@@ -32,8 +32,7 @@
         <activity
             android:name=".StepDetailActivity"
             android:label="@string/title_step_detail"
-            android:parentActivityName=".StepActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".StepActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.charlesrowland.ragingclaw.bakingapp.StepActivity" />

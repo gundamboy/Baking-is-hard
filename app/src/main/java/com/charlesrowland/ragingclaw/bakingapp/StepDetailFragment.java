@@ -7,6 +7,10 @@ import com.charlesrowland.ragingclaw.bakingapp.model.Step;
 import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import android.os.Bundle;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -48,10 +52,9 @@ public class StepDetailFragment extends Fragment {
             mStepList = mRecipeArrayList.get(0).getSteps();
             String step_number = getArguments().getString(AllMyConstants.ARG_ITEM_ID);
 
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(getString(R.string.title_step_detail, recipe_name, step_number));
+            ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle(getString(R.string.title_step_detail, recipe_name, step_number));
             }
         }
     }

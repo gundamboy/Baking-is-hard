@@ -2,21 +2,9 @@ package com.charlesrowland.ragingclaw.bakingapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.ActionBar;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import timber.log.Timber;
-
-import android.provider.MediaStore;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,16 +22,19 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 
-import static java.security.AccessController.getContext;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * An activity representing a single Step detail screen. This
@@ -80,8 +71,6 @@ public class StepDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
 
         Timber.v("we are here");
 
@@ -124,6 +113,7 @@ public class StepDetailActivity extends AppCompatActivity {
 
         }
 
+        Timber.v("onCreate mPlayerPosition: %s", mPlayerPosition);
         initializePlayer(mVideoUri);
     }
 
@@ -185,7 +175,12 @@ public class StepDetailActivity extends AppCompatActivity {
             initializePlayer(mVideoUri);
         }
         if(mSimplePlayer != null){
-            mSimplePlayer.setPlayWhenReady(mShouldPlayWhenReady);
+            Timber.v("on resume mPlayerPosition: %s", mPlayerPosition);
+            if(mPlayerPosition > 0) {
+                mSimplePlayer.setPlayWhenReady(mShouldPlayWhenReady);
+                mPlayerView.hideController();
+            }
+
             mSimplePlayer.seekTo(mPlayerPosition);
         }
     }

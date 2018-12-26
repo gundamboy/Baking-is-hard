@@ -63,18 +63,6 @@ public class VideoFragment extends Fragment {
 
 
 
-
-
-
-//        mStepDescription.setText(mCurrentStep.getDescription());
-//
-//        android.app.ActionBar actionBar = getActivity().getActionBar();
-//        if (actionBar != null) {
-//            actionBar.setTitle(getString(R.string.title_step_detail, mCurrentRecipe.getName(), String.valueOf(mStepNumber)));
-//        }
-
-
-
         return fragmentView;
     }
 

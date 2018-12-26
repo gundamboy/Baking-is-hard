@@ -19,4 +19,5 @@ public class AllMyConstants {
     public static final String STEP_PLAY_WHEN_READY =  "step_play_when_ready";
     public static final String STEP_PLAY_WINDOW_INDEX =  "step_play_window_index";
     public static final String STEP_SINGLE =  "step_single";
+    public static final String STATE_PLAYER_FULLSCREEN = "exoplayer_fullscreen_state";
 }
