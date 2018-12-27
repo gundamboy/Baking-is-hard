@@ -49,7 +49,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
                 Intent intent = new Intent(context, StepDetailActivity.class);
                 intent.putExtra(AllMyConstants.ARG_ITEM_ID, item.getId());
                 intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_ARRAYLIST_STATE, mRecipeArrayList);
-
+                Timber.i("clicked on a thing");
                 context.startActivity(intent);
             }
         }

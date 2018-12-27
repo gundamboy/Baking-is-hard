@@ -43,7 +43,8 @@ public class StepActivity extends AppCompatActivity {
     private List<Ingredient> mIngredientList = new ArrayList<>();
     private ArrayList<Step> mStepList = new ArrayList<>();
     private StepAdapter mStepAdapter;
-    private int mVideoNumber = 0;
+    private int mStepNumber = 0;
+    private String mTitle;
 
     private boolean mTwoPane;
 
@@ -74,24 +75,28 @@ public class StepActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState != null) {
-           mStepList = savedInstanceState.getParcelableArrayList(AllMyConstants.STEPS_ARRAYLIST_STATE);
-           mVideoNumber = savedInstanceState.getInt(AllMyConstants.STEP_NUMBER);
+            mRecipeArrayList = savedInstanceState.getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
+            mStepList = savedInstanceState.getParcelableArrayList(AllMyConstants.STEPS_ARRAYLIST_STATE);
+            mStepNumber = savedInstanceState.getInt(AllMyConstants.STEP_NUMBER);
+            mTitle = savedInstanceState.getString(AllMyConstants.STEP_TITLE);
+
         } else {
             Intent recipeIntent = getIntent();
             if (recipeIntent != null && recipeIntent.hasExtra(AllMyConstants.RECIPE_INTENT_EXTRA)) {
                 mRecipeArrayList = recipeIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA);
                 mIngredientList = mRecipeArrayList.get(0).getIngredients();
                 mStepList = (ArrayList<Step>) mRecipeArrayList.get(0).getSteps();
-                actionBar.setTitle(getString(R.string.title_step_list, mRecipeArrayList.get(0).getName()));
-
+                mTitle = getString(R.string.title_step_list, mRecipeArrayList.get(0).getName());
             }
         }
+
+        actionBar.setTitle(mTitle);
 
         assert mStepsRecyclerView != null;
         setupRecyclerView(mStepsRecyclerView);
 
         if (mTwoPane) {
-            playerVideo(mStepList, mVideoNumber);
+            playerVideo(mStepList, mStepNumber);
         }
     }
 
@@ -110,13 +115,6 @@ public class StepActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
             NavUtils.navigateUpFromSameTask(this);
             return true;
         }
@@ -131,5 +129,14 @@ public class StepActivity extends AppCompatActivity {
 
         mStepAdapter = new StepAdapter(this, (ArrayList<Step>) mStepList, mRecipeArrayList, mTwoPane);
         recyclerView.setAdapter(mStepAdapter);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE, mRecipeArrayList);
+        outState.putParcelableArrayList(AllMyConstants.STEPS_ARRAYLIST_STATE, mStepList);
+        outState.putInt(AllMyConstants.STEP_NUMBER, mStepNumber);
+        outState.putString(AllMyConstants.STEP_TITLE, mTitle);
     }
 }

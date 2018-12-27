@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/baseline_16"
+    android:paddingTop="@dimen/baseline_8"
     android:paddingLeft="@dimen/baseline_16"
     android:paddingRight="@dimen/baseline_16"
     android:paddingBottom="@dimen/baseline_0"
     tools:context=".StepDetailActivity">
 
-    <include
-        android:id="@+id/video_layout_container"
-        layout="@layout/video_fragment_layout"
+    <FrameLayout
+        android:id="@+id/step_detail_container"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
