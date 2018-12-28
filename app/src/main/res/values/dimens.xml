@@ -13,6 +13,11 @@
     <dimen name="margins_18">18dp</dimen>
     <dimen name="margins_20">20dp</dimen>
     <dimen name="margins_24">24dp</dimen>
+    <dimen name="margin_28">28dp</dimen>
+    <dimen name="margin_60">60dp</dimen>
+
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
 
     <dimen name="margins_text_match_dots">48dp</dimen>
     <dimen name="app_bar_height">200dp</dimen>
@@ -39,9 +44,7 @@
     <!--this is to avoid colliding with the floating poster in the details view -->
     <dimen name="details_poster_push_margin_start">125dp</dimen>
     <dimen name="title_bar_height">40dp</dimen>
-    <dimen name="margin_28">28dp</dimen>
     <dimen name="title_screen_credits_bar_height">1dp</dimen>
-    <dimen name="margin_60">60dp</dimen>
     <dimen name="title_screen_app_name_size">54sp</dimen>
     <dimen name="camera_image_width">132dp</dimen>
     <dimen name="camera_image_height">215dp</dimen>
@@ -49,6 +52,7 @@
     <dimen name="item_width">320dp</dimen>
     <dimen name="steps_item_width_landscape">280dp</dimen>
     <dimen name="ingredient_amount_block_width">50dp</dimen>
-    <dimen name="padding_16">16dp</dimen>
     <dimen name="play_circle_dimen">24dp</dimen>
+    <dimen name="nav_next_prev">28dp</dimen>
+    <dimen name="margins_32">32dp</dimen>
 </resources>

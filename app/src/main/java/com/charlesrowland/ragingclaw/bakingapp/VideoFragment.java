@@ -17,6 +17,8 @@ import timber.log.Timber;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,6 +57,8 @@ public class VideoFragment extends Fragment {
     private boolean mShouldPlayWhenReady = true;
     private long mPlayerPosition;
     private int mWindowIndex;
+    private boolean mShowNextArrow;
+    private boolean mShowPrevArrow;
 
     private String mVideoThumbnail;
     private Bitmap mVideoThumbnailImage;
@@ -67,8 +71,9 @@ public class VideoFragment extends Fragment {
     private MediaSource mVideoSource;
 
     @BindView(R.id.step_description) TextView mStepDescription;
-    @BindView(R.id.iv_video_placeholder) ImageView mVideoPlaceHolder;
     @BindView(R.id.player_view) PlayerView mPlayerView;
+    @BindView(R.id.next_video) Button mNextVideoButton;
+    @BindView(R.id.prev_video) Button mPrevVideoButton;
     private Unbinder unbinder;
 
     public VideoFragment() {
@@ -81,9 +86,7 @@ public class VideoFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.video_fragment_layout, container, false);
         unbinder = ButterKnife.bind(this, fragmentView);
 
-        Timber.i("fart: Its fragment time!");
-
-        mRecipeArrayList =this.getArguments().getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
+        mRecipeArrayList = this.getArguments().getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
         mCurrentRecipe = mRecipeArrayList.get(0);
         mStepList = (ArrayList<Step>) mCurrentRecipe.getSteps();
         mStepNumber = this.getArguments().getInt(AllMyConstants.STEP_NUMBER);
@@ -91,9 +94,15 @@ public class VideoFragment extends Fragment {
         mVideoUri = Uri.parse(mCurrentStep.getVideoURL());
         mStepDescription.setText(mCurrentStep.getDescription());
 
+        int stepCount = mStepList.size();
+        mShowPrevArrow = mStepNumber != 0;
+        mShowNextArrow = mStepNumber != stepCount-1;
+
         if (savedInstanceState != null) {
             mCurrentStep = savedInstanceState.getParcelable(AllMyConstants.STEP_SINGLE);
             mShouldPlayWhenReady = savedInstanceState.getBoolean(AllMyConstants.STEP_PLAY_WHEN_READY);
+            mShowNextArrow = savedInstanceState.getBoolean(AllMyConstants.STATE_NEXT_VIDEO_ICON);
+            mShowPrevArrow = savedInstanceState.getBoolean(AllMyConstants.STATE_PREV_VIDEO_ICON);
             mPlayerPosition = savedInstanceState.getLong(AllMyConstants.STEP_VIDEO_POSITION);
             mWindowIndex = savedInstanceState.getInt(AllMyConstants.STEP_PLAY_WINDOW_INDEX);
             mVideoUri = Uri.parse(savedInstanceState.getString(AllMyConstants.STEP_URI));
@@ -102,8 +111,19 @@ public class VideoFragment extends Fragment {
         }
 
         initializePlayer(mVideoUri);
+        initializeNavButtons();
 
         return fragmentView;
+    }
+
+    private void initializeNavButtons() {
+        if (mShowPrevArrow) {
+            mPrevVideoButton.setVisibility(View.VISIBLE);
+        }
+
+        if (mShowNextArrow) {
+            mNextVideoButton.setVisibility(View.VISIBLE);
+        }
     }
 
     public void initializePlayer(Uri videoUrl) {
@@ -212,12 +232,13 @@ public class VideoFragment extends Fragment {
         outState.putParcelable(AllMyConstants.STEP_SINGLE, mCurrentStep);
         outState.putLong(AllMyConstants.STEP_VIDEO_POSITION, mPlayerPosition);
         outState.putBoolean(AllMyConstants.STEP_PLAY_WHEN_READY, mShouldPlayWhenReady);
+        outState.putBoolean(AllMyConstants.STATE_NEXT_VIDEO_ICON, mShowNextArrow);
+        outState.putBoolean(AllMyConstants.STATE_PREV_VIDEO_ICON, mShowPrevArrow);
     }
 
     @Override public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
 }

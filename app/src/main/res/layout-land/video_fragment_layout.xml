@@ -39,20 +39,39 @@
             app:layout_constraintTop_toBottomOf="@+id/player_view"
             tools:text="This is a description" />
 
-        <ImageView
-            android:id="@+id/iv_video_placeholder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="placeholder image"
-            android:src="@drawable/ic_play_circle"
+        <Button
+            android:id="@+id/next_video"
+            style="@style/VideoStepsButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nav_next_prev"
+            android:layout_marginTop="@dimen/margins_32"
+            android:layout_marginEnd="@dimen/margins_8"
+            android:layout_marginBottom="@dimen/margins_8"
+            android:contentDescription="@string/next_video"
+            android:drawableEnd="@drawable/ic_nav_next"
+            android:text="@string/next_step_button_text"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/step_description"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/prev_video"
+            style="@style/VideoStepsButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nav_next_prev"
+            android:layout_marginTop="@dimen/margins_32"
+            android:layout_marginStart="@dimen/margins_8"
+            android:layout_marginBottom="@dimen/margins_8"
+            android:contentDescription="@string/previous_video"
+            android:drawableStart="@drawable/ic_nav_prev"
+            android:text="@string/previous_step_button_text"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step_description" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,8 @@ import android.widget.TextView;
 
 import com.charlesrowland.ragingclaw.bakingapp.R;
 import com.charlesrowland.ragingclaw.bakingapp.StepDetailActivity;
-import com.charlesrowland.ragingclaw.bakingapp.StepDetailFragment;
 import com.charlesrowland.ragingclaw.bakingapp.StepActivity;
+import com.charlesrowland.ragingclaw.bakingapp.VideoFragment;
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
 import com.charlesrowland.ragingclaw.bakingapp.model.Step;
 import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
@@ -37,19 +38,20 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
             if(mTwoPane) {
                 Bundle arguments = new Bundle();
-                arguments.putInt(AllMyConstants.ARG_ITEM_ID, item.getId());
+                arguments.putInt(AllMyConstants.STEP_NUMBER, item.getId());
                 arguments.putParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE, mRecipeArrayList);
-                StepDetailFragment fragment = new StepDetailFragment();
-                fragment.setArguments(arguments);
-                mParentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.step_detail_container, fragment)
-                        .commit();
+
+                final FragmentTransaction transaction = mParentActivity.getSupportFragmentManager().beginTransaction();
+                VideoFragment videoFragment = new VideoFragment();
+                videoFragment.setArguments(arguments);
+                transaction.add(R.id.step_detail_container, videoFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             } else {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, StepDetailActivity.class);
-                intent.putExtra(AllMyConstants.ARG_ITEM_ID, item.getId());
+                intent.putExtra(AllMyConstants.STEP_NUMBER, item.getId());
                 intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_ARRAYLIST_STATE, mRecipeArrayList);
-                Timber.i("clicked on a thing");
                 context.startActivity(intent);
             }
         }

@@ -13,4 +13,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next_video">next video</string>
+    <string name="previous_video">previous video</string>
+    <string name="next_step_button_text">Next Step</string>
+    <string name="previous_step_button_text">Previous Step</string>
 </resources>

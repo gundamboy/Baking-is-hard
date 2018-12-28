@@ -1,26 +1,18 @@
 package com.charlesrowland.ragingclaw.bakingapp;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
 import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
-import com.google.android.exoplayer2.ui.PlayerView;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.fragment.app.FragmentTransaction;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import timber.log.Timber;
 
 /**
@@ -39,8 +31,6 @@ public class StepDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
 
-        Timber.v("we are here");
-
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -55,14 +45,11 @@ public class StepDetailActivity extends AppCompatActivity {
             Intent recipeIntent = getIntent();
 
             if (recipeIntent.hasExtra(AllMyConstants.RECIPE_ARRAYLIST_STATE)) {
-                Timber.i("fart: recipe intent has extras");
                 mRecipeArrayList = recipeIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_ARRAYLIST_STATE);
                 mCurrentRecipe = mRecipeArrayList.get(0);
-                mStepNumber = recipeIntent.getIntExtra(AllMyConstants.ARG_ITEM_ID, 0);
-                Timber.i("fart: we got passes setting the recipe array stuff");
-
+                mStepNumber = recipeIntent.getIntExtra(AllMyConstants.STEP_NUMBER, 0);
                 Bundle bundle = new Bundle();
-                bundle.putInt(AllMyConstants.ARG_ITEM_ID, mStepNumber);
+                bundle.putInt(AllMyConstants.STEP_NUMBER, mStepNumber);
                 bundle.putParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE, mRecipeArrayList);
 
                 final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
