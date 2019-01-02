@@ -1,24 +1,25 @@
 package com.charlesrowland.ragingclaw.bakingapp;
 
 
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import timber.log.Timber;
 
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,8 +36,9 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.exoplayer2.ui.PlaybackControlView;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -60,7 +62,7 @@ public class VideoFragment extends Fragment {
     private boolean mShowNextArrow;
     private boolean mShowPrevArrow;
 
-    private String mVideoThumbnail;
+    private String mVideoThumbnailUrl;
     private Bitmap mVideoThumbnailImage;
 
     private SimpleExoPlayer mSimplePlayer;
@@ -69,6 +71,7 @@ public class VideoFragment extends Fragment {
     private TrackSelector mTrackSelector;
     private DataSource.Factory mDataSourceFactory;
     private MediaSource mVideoSource;
+    private boolean isLandscape = false;
 
     @BindView(R.id.step_description) TextView mStepDescription;
     @BindView(R.id.player_view) PlayerView mPlayerView;
@@ -86,12 +89,22 @@ public class VideoFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.video_fragment_layout, container, false);
         unbinder = ButterKnife.bind(this, fragmentView);
 
+        isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+
         mRecipeArrayList = this.getArguments().getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
         mCurrentRecipe = mRecipeArrayList.get(0);
         mStepList = (ArrayList<Step>) mCurrentRecipe.getSteps();
         mStepNumber = this.getArguments().getInt(AllMyConstants.STEP_NUMBER);
         mCurrentStep = mStepList.get(mStepNumber);
-        mVideoUri = Uri.parse(mCurrentStep.getVideoURL());
+
+        if (!mCurrentStep.getVideoURL().isEmpty()) {
+            mVideoUri = Uri.parse(mCurrentStep.getVideoURL());
+        }
+
+        if (!mCurrentStep.getThumbnailURL().isEmpty()) {
+            mVideoThumbnailUrl = mCurrentStep.getThumbnailURL();
+        }
+
         mStepDescription.setText(mCurrentStep.getDescription());
 
         int stepCount = mStepList.size();
@@ -106,14 +119,35 @@ public class VideoFragment extends Fragment {
             mPlayerPosition = savedInstanceState.getLong(AllMyConstants.STEP_VIDEO_POSITION);
             mWindowIndex = savedInstanceState.getInt(AllMyConstants.STEP_PLAY_WINDOW_INDEX);
             mVideoUri = Uri.parse(savedInstanceState.getString(AllMyConstants.STEP_URI));
-        } else {
-
         }
 
         initializePlayer(mVideoUri);
         initializeNavButtons();
 
         return fragmentView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (isLandscape) {
+            hideSystemUI();
+        }
+
+        mPlayerView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    // System bars are visible
+                    showSystemUI();
+                } else {
+                    // System bars are NOT visible
+                    hideSystemUI();
+                }
+            }
+        });
     }
 
     private void initializeNavButtons() {
@@ -239,6 +273,31 @@ public class VideoFragment extends Fragment {
     @Override public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    private void hideSystemUI() {
+        // Enables regular immersive mode.
+        View decorView = getActivity().getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        // Set the content to appear under the system bars so that the
+                        // content doesn't resize when the system bars hide and show.
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        // Hide the nav bar and status bar
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    // Shows the system bars by removing all the flags
+    // except for the ones that make the content appear under the system bars.
+    private void showSystemUI() {
+        View decorView = getActivity().getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
 }
