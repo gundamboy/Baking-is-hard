@@ -1,6 +1,7 @@
 package com.charlesrowland.ragingclaw.bakingapp;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -25,17 +26,18 @@ public class StepDetailActivity extends AppCompatActivity {
     private ArrayList<Recipe> mRecipeArrayList;
     private int mStepNumber = 0;
     private Recipe mCurrentRecipe;
+    private boolean isLandscape;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
 
+        isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+
         // Show the Up button in the action bar.
+
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         if (savedInstanceState != null) {
             mRecipeArrayList = savedInstanceState.getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
@@ -62,7 +64,8 @@ public class StepDetailActivity extends AppCompatActivity {
         }
 
         if (actionBar != null) {
-            actionBar.setTitle(getString(R.string.title_step_detail, mCurrentRecipe.getName(), String.valueOf(mStepNumber)));
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            //actionBar.setTitle(getString(R.string.title_step_detail, mCurrentRecipe.getName(), String.valueOf(mStepNumber)));
         }
     }
 

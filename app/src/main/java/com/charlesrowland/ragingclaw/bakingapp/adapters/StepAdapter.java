@@ -44,7 +44,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
                 final FragmentTransaction transaction = mParentActivity.getSupportFragmentManager().beginTransaction();
                 VideoFragment videoFragment = new VideoFragment();
                 videoFragment.setArguments(arguments);
-                transaction.add(R.id.step_detail_container, videoFragment);
+                transaction.replace(R.id.step_detail_container, videoFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
             } else {

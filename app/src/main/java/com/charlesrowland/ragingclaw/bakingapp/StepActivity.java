@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -87,6 +88,7 @@ public class StepActivity extends AppCompatActivity {
                 mIngredientList = mRecipeArrayList.get(0).getIngredients();
                 mStepList = (ArrayList<Step>) mRecipeArrayList.get(0).getSteps();
                 mTitle = getString(R.string.title_step_list, mRecipeArrayList.get(0).getName());
+                mStepNumber = 0;
             }
         }
 
@@ -96,19 +98,21 @@ public class StepActivity extends AppCompatActivity {
         setupRecyclerView(mStepsRecyclerView);
 
         if (mTwoPane) {
-            playerVideo(mStepList, mStepNumber);
+            loadDetailsPane(mStepNumber);
         }
     }
 
-    public void playerVideo(List<Step> stepList, int videoNumber) {
-        VideoFragment videoFragment = new VideoFragment();
+    public void loadDetailsPane(int mStepNumber) {
         Bundle arguments = new Bundle();
-        arguments.putParcelableArrayList(AllMyConstants.STEPS_ARRAYLIST_STATE, (ArrayList<? extends Parcelable>) stepList);
-        arguments.putInt(AllMyConstants.STEP_NUMBER, videoNumber);
-        videoFragment.setArguments(arguments);
+        arguments.putInt(AllMyConstants.STEP_NUMBER, mStepNumber);
+        arguments.putParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE, mRecipeArrayList);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.video_layout_container, videoFragment).addToBackStack(null).commit();
+        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        VideoFragment videoFragment = new VideoFragment();
+        videoFragment.setArguments(arguments);
+        transaction.replace(R.id.step_detail_container, videoFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override

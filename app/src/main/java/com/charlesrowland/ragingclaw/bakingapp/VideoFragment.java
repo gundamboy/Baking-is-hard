@@ -7,8 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -45,6 +48,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +65,7 @@ public class VideoFragment extends Fragment {
     private int mWindowIndex;
     private boolean mShowNextArrow;
     private boolean mShowPrevArrow;
+    private String mTitle;
 
     private String mVideoThumbnailUrl;
     private Bitmap mVideoThumbnailImage;
@@ -71,7 +76,8 @@ public class VideoFragment extends Fragment {
     private TrackSelector mTrackSelector;
     private DataSource.Factory mDataSourceFactory;
     private MediaSource mVideoSource;
-    private boolean isLandscape = false;
+    private boolean isLandscape;
+    private boolean mIsLargeScreen;
 
     @BindView(R.id.step_description) TextView mStepDescription;
     @BindView(R.id.player_view) PlayerView mPlayerView;
@@ -90,16 +96,14 @@ public class VideoFragment extends Fragment {
         unbinder = ButterKnife.bind(this, fragmentView);
 
         isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        mIsLargeScreen = Objects.requireNonNull(getActivity()).getResources().getBoolean(R.bool.isLargeScreen);
 
         mRecipeArrayList = this.getArguments().getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
         mCurrentRecipe = mRecipeArrayList.get(0);
+        mTitle = mCurrentRecipe.getName();
         mStepList = (ArrayList<Step>) mCurrentRecipe.getSteps();
         mStepNumber = this.getArguments().getInt(AllMyConstants.STEP_NUMBER);
         mCurrentStep = mStepList.get(mStepNumber);
-
-        if (!mCurrentStep.getVideoURL().isEmpty()) {
-            mVideoUri = Uri.parse(mCurrentStep.getVideoURL());
-        }
 
         if (!mCurrentStep.getThumbnailURL().isEmpty()) {
             mVideoThumbnailUrl = mCurrentStep.getThumbnailURL();
@@ -121,6 +125,17 @@ public class VideoFragment extends Fragment {
             mVideoUri = Uri.parse(savedInstanceState.getString(AllMyConstants.STEP_URI));
         }
 
+        if (!mCurrentStep.getVideoURL().isEmpty()) {
+            mVideoUri = Uri.parse(mCurrentStep.getVideoURL());
+        } else {
+            mStepDescription.setVisibility(View.VISIBLE);
+        }
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.title_step_detail, mTitle, String.valueOf(mStepNumber)));
+        }
+
         initializePlayer(mVideoUri);
         initializeNavButtons();
 
@@ -131,64 +146,99 @@ public class VideoFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (isLandscape) {
-            hideSystemUI();
-        }
+        if (!mIsLargeScreen && mVideoUri != null) {
+            mPlayerView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
 
-        mPlayerView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                    // System bars are visible
-                    showSystemUI();
-                } else {
-                    // System bars are NOT visible
-                    hideSystemUI();
+                @Override
+                public void onSystemUiVisibilityChange(int visibility) {
+                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                        // System bars are visible
+                        showSystemUI();
+                    } else {
+                        // System bars are NOT visible
+                        hideSystemUI();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void initializeNavButtons() {
         if (mShowPrevArrow) {
             mPrevVideoButton.setVisibility(View.VISIBLE);
+
+            // reload previous set
+            mPrevVideoButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    mStepNumber -= 1;
+                    loadNewStep(mStepNumber);
+                }
+            });
+
         }
 
         if (mShowNextArrow) {
             mNextVideoButton.setVisibility(View.VISIBLE);
+
+            // load next step
+            mNextVideoButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    mStepNumber +=1;
+                    loadNewStep(mStepNumber);
+                }
+            });
+
         }
     }
 
+    private void loadNewStep(int mStepNumber) {
+        Bundle arguments = new Bundle();
+        arguments.putInt(AllMyConstants.STEP_NUMBER, mStepNumber);
+        arguments.putParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE, mRecipeArrayList);
+
+        final FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        VideoFragment videoFragment = new VideoFragment();
+        videoFragment.setArguments(arguments);
+        transaction.replace(R.id.step_detail_container, videoFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     public void initializePlayer(Uri videoUrl) {
-        Timber.i("fart: initializePlayer");
-        if (mSimplePlayer == null) {
-            Timber.i("fart: mSimplePlayer is null");
-            // Create a default TrackSelector
-            mBandwidthMeter = new DefaultBandwidthMeter();
-            mVideoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(mBandwidthMeter);
-            mTrackSelector = new DefaultTrackSelector(mVideoTrackSelectionFactory);
+        if (videoUrl == null) {
+            mPlayerView.setVisibility(View.GONE);
+        } else {
+            if (mSimplePlayer == null) {
+                Timber.i("fart: mSimplePlayer is null");
+                // Create a default TrackSelector
+                mBandwidthMeter = new DefaultBandwidthMeter();
+                mVideoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(mBandwidthMeter);
+                mTrackSelector = new DefaultTrackSelector(mVideoTrackSelectionFactory);
 
-            // Create the player
-            mSimplePlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), mTrackSelector);
+                // Create the player
+                mSimplePlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), mTrackSelector);
 
-            // Bind the player to the view
-            mPlayerView.setPlayer(mSimplePlayer);
-            mPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+                // Bind the player to the view
+                mPlayerView.setPlayer(mSimplePlayer);
+                mPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
 
-            // Produce DataSource instance through which data is loaded
-            mDataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), getString(R.string.app_name)), mBandwidthMeter);
+                // Produce DataSource instance through which data is loaded
+                mDataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), getString(R.string.app_name)), mBandwidthMeter);
 
-            // MediaSource - the video being played
-            mVideoSource = new ExtractorMediaSource.Factory(mDataSourceFactory).createMediaSource(mVideoUri);
+                // MediaSource - the video being played
+                mVideoSource = new ExtractorMediaSource.Factory(mDataSourceFactory).createMediaSource(videoUrl);
 
-            if (mPlayerPosition != C.TIME_UNSET) {
-                mSimplePlayer.seekTo(mPlayerPosition);
+                if (mPlayerPosition != C.TIME_UNSET) {
+                    mSimplePlayer.seekTo(mPlayerPosition);
+                }
+
+                // Prepare the player
+                mSimplePlayer.prepare(mVideoSource);
             }
-
-            // Prepare the player
-            mSimplePlayer.prepare(mVideoSource);
-
         }
     }
 
