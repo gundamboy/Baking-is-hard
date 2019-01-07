@@ -80,11 +80,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
                 mRecipeJson = jsonToString(mJsonResult, holder.getAdapterPosition());
 
                 Intent intent;
-                if (mTwoPane) {
-                    intent = new Intent(mContext, StepActivity.class);
-                } else {
-                    intent = new Intent(mContext, IngredientsActivity.class);
-                }
+//                if (mTwoPane) {
+//                    intent = new Intent(mContext, StepActivity.class);
+//                } else {
+//                    intent = new Intent(mContext, IngredientsActivity.class);
+//                }
+                intent = new Intent(mContext, IngredientsActivity.class);
                 intent.putParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA, currentRecipeArrayList);
                 intent.putExtra(AllMyConstants.RECIPE_INTENT_JSON_EXTRA, mRecipeJson);
                 mContext.startActivity(intent);

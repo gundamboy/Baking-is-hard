@@ -4,32 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/CardView.Light"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginTop="@dimen/margins_8">
 
-    <TextView
-        android:id="@+id/stepsInstructionsHeader"
-        style="@style/StepsListItemText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margins_8"
-        android:layout_marginEnd="@dimen/margins_8"
-        android:text="@string/steps_instructions_header"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/step_list"
-        android:name="com.charlesrowland.ragingclaw.bakingapp.StepListFragment"
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margins_8"
-        android:layout_marginEnd="@dimen/margins_8"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stepsInstructionsHeader"
-        tools:context=".StepActivity"
-        tools:itemCount="9"
-        tools:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/step_list_item" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/stepsInstructionsHeader"
+                style="@style/StepsListItemText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/steps_instructions_header" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/step_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                tools:context=".StepActivity"
+                tools:itemCount="6"
+                tools:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/step_list_item" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
