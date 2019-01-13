@@ -55,4 +55,10 @@
     <dimen name="play_circle_dimen">24dp</dimen>
     <dimen name="nav_next_prev">28dp</dimen>
     <dimen name="margins_32">32dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
 </resources>
