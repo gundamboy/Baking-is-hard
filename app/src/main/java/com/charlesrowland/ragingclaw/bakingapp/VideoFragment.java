@@ -213,7 +213,6 @@ public class VideoFragment extends Fragment {
             mPlayerView.setVisibility(View.GONE);
         } else {
             if (mSimplePlayer == null) {
-                Timber.i("fart: mSimplePlayer is null");
                 // Create a default TrackSelector
                 mBandwidthMeter = new DefaultBandwidthMeter();
                 mVideoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(mBandwidthMeter);
