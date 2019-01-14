@@ -24,4 +24,5 @@ public class AllMyConstants {
     public static final String STATE_PLAYER_FULLSCREEN = "exoplayer_fullscreen_state";
     public static final String STATE_NEXT_VIDEO_ICON = "next_video_icon";
     public static final String STATE_PREV_VIDEO_ICON = "prev_video_icon";
+    public static final String SHARED_PREFS = "shared_preferences";
 }

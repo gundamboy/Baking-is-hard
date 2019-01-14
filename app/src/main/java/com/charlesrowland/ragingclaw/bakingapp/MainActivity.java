@@ -1,5 +1,7 @@
 package com.charlesrowland.ragingclaw.bakingapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.view.View;
 
 import com.charlesrowland.ragingclaw.bakingapp.adapters.RecipeAdapter;
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private Boolean mTwoPane = false;
     private Parcelable mRecipeState;
     private RecyclerView.LayoutManager mLayoutManager;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
 
     @BindView(R.id.recipeRecyclerView) RecyclerView mRecipeRecyclerView;
     @BindView(R.id.emptyViews) View mEmptyView;
@@ -63,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        sharedPreferences = getSharedPreferences(AllMyConstants.SHARED_PREFS, Context.MODE_PRIVATE);
 
         mLayoutManager = new LinearLayoutManager(MainActivity.this);
 
@@ -119,6 +127,16 @@ public class MainActivity extends AppCompatActivity {
                 mRecipeRecyclerView.setLayoutManager(mLayoutManager);
                 mRecipeRecyclerView.setHasFixedSize(true);
                 mRecipeRecyclerView.setAdapter(mRecipeAdapter);
+
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                editor = sharedPreferences.edit();
+                Gson gsonIngList = new Gson();
+                String json = gsonIngList.toJson(mRecipeList);
+
+                editor.putString(AllMyConstants.RECIPE_JSON_RESULT_STATE, json);
+                editor.apply();
+
+                Timber.v("fart MAinActivity mRecipeJsonResult: %s", mRecipeJsonResult);
             }
 
             @Override
