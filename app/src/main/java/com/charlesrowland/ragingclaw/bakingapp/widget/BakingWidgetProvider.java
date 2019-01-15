@@ -27,6 +27,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
 
         Intent serviceIntent = new Intent(context, BakingWidgetService.class);
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         views.setRemoteAdapter(R.id.baking_widget_list, serviceIntent);
 
         SharedPreferences sharedPreferences;
@@ -36,10 +37,10 @@ public class BakingWidgetProvider extends AppWidgetProvider {
 
         // Create an intent
         Intent intent = new Intent(context, IngredientsActivity.class);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setPendingIntentTemplate(R.id.baking_widget_list, pendingIntent);
+        views.setEmptyView(R.id.baking_widget_list, R.id.empty_view);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

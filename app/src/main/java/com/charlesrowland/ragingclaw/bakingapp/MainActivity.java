@@ -135,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
 
                 editor.putString(AllMyConstants.RECIPE_JSON_RESULT_STATE, json);
                 editor.apply();
-
-                Timber.v("fart MAinActivity mRecipeJsonResult: %s", mRecipeJsonResult);
             }
 
             @Override

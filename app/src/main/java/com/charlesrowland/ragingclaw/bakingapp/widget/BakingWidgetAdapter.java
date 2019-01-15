@@ -30,7 +30,7 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
     public BakingWidgetAdapter(Context mContext, Intent mIntent) {
         this.mContext = mContext;
         this.mIntent = mIntent;
-        //this.mRecipeList = getRecipeList();
+        this.mRecipeList = getRecipeList();
     }
 
     private ArrayList<Recipe> getRecipeList() {
@@ -39,11 +39,11 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
         if ((sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext)) != null) {
             mJsonResult = sharedPreferences.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE, "No Data");
 
-            //Timber.v("fart mJsonResult test: %s", mJsonResult);
-
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<Recipe>>() {}.getType();
             mRecipeList = gson.fromJson(mJsonResult, type);
+
+            Timber.v("fart mJsonResult test after conversion: %s", mJsonResult);
 
         }
         return mRecipeList;
