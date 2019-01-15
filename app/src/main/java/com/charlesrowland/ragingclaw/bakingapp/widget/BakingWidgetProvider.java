@@ -5,11 +5,15 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 
 import com.charlesrowland.ragingclaw.bakingapp.IngredientsActivity;
 import com.charlesrowland.ragingclaw.bakingapp.R;
 import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
+
+import timber.log.Timber;
 
 /**
  * Implementation of App Widget functionality.
@@ -24,6 +28,11 @@ public class BakingWidgetProvider extends AppWidgetProvider {
 
         Intent serviceIntent = new Intent(context, BakingWidgetService.class);
         views.setRemoteAdapter(R.id.baking_widget_list, serviceIntent);
+
+        SharedPreferences sharedPreferences;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mJsonResult = sharedPreferences.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE, "No Data");
+        //Timber.v("fart mJsonResult: %s", mJsonResult);
 
         // Create an intent
         Intent intent = new Intent(context, IngredientsActivity.class);

@@ -21,14 +21,14 @@ import java.util.List;
 import timber.log.Timber;
 
 public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
-    private Context mContent;
+    private Context mContext;
     private Intent mIntent;
     private ArrayList<Recipe> mRecipeList;
     private List<Ingredient> mIngredientList;
     private String mJsonResult;
 
-    public BakingWidgetAdapter(Context mContent, Intent mIntent) {
-        this.mContent = mContent;
+    public BakingWidgetAdapter(Context mContext, Intent mIntent) {
+        this.mContext = mContext;
         this.mIntent = mIntent;
         //this.mRecipeList = getRecipeList();
     }
@@ -36,13 +36,14 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
     private ArrayList<Recipe> getRecipeList() {
         mRecipeList = null;
         SharedPreferences sharedPreferences;
-        if ((sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContent)) != null) {
-            mJsonResult = sharedPreferences.getString(AllMyConstants.RECIPE_JSON_STATE, "No Data");
-            Timber.v("fart mJsonResult: %s", "");
+        if ((sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext)) != null) {
+            mJsonResult = sharedPreferences.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE, "No Data");
+
+            //Timber.v("fart mJsonResult test: %s", mJsonResult);
+
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<Recipe>>() {}.getType();
-            //mRecipeList = gson.fromJson(mJsonResult, type);
-
+            mRecipeList = gson.fromJson(mJsonResult, type);
 
         }
         return mRecipeList;
@@ -70,10 +71,10 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public RemoteViews getViewAt(int position) {
-        RemoteViews remoteViews = new RemoteViews(mContent.getPackageName(), R.layout.widget_list_item);
+        RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_list_item);
 
         Timber.v("we got this far");
-        //remoteViews.setTextViewText(R.id.name, mRecipeList.get(position).getName());
+        remoteViews.setTextViewText(R.id.name, mRecipeList.get(position).getName());
 
         return remoteViews;
     }
