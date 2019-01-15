@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Baking App</string>
+    <string name="app_name">Baking Is Hard</string>
     <string name="no_internet">It looks like you don\'t have an internet connection. You get no delicious recipes.</string>
     <string name="no_results">It looks like there are no delicious recipes to show at this time.</string>
     <string name="recipes_header_text">Recipes</string>

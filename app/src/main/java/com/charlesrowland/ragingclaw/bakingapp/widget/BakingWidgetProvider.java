@@ -26,14 +26,15 @@ public class BakingWidgetProvider extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
 
-        Intent serviceIntent = new Intent(context, BakingWidgetService.class);
-        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        views.setRemoteAdapter(R.id.baking_widget_list, serviceIntent);
-
         SharedPreferences sharedPreferences;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String mJsonResult = sharedPreferences.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE, "No Data");
         //Timber.v("fart mJsonResult: %s", mJsonResult);
+
+        Intent serviceIntent = new Intent(context, BakingWidgetService.class);
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        serviceIntent.putExtra(AllMyConstants.RECIPE_JSON_RESULT_STATE, mJsonResult);
+        views.setRemoteAdapter(R.id.baking_widget_list, serviceIntent);
 
         // Create an intent
         Intent intent = new Intent(context, IngredientsActivity.class);

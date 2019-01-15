@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/cardBackground"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/margins_8"
-    android:layout_marginBottom="@dimen/margins_8"
+    android:layout_marginBottom="@dimen/margins_6"
+    android:layout_marginTop="@dimen/margins_6"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -19,5 +19,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Nutella Pie" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            style="@style/RecipeListItemMetaText"
+            android:id="@+id/servings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margins_8"
+            android:layout_marginTop="@dimen/margins_8"
+            tools:text="Servings: 8" />
+
+        <TextView
+            style="@style/RecipeListItemMetaText"
+            android:id="@+id/totalIngredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="@dimen/margins_8"
+            android:layout_toEndOf="@+id/servings"
+            tools:text="Total Ingredients: 10" />
+    </RelativeLayout>
 
 </LinearLayout>

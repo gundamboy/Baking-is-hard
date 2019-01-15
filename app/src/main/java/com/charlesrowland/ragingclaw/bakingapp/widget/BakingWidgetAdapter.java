@@ -42,6 +42,7 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<Recipe>>() {}.getType();
             mRecipeList = gson.fromJson(mJsonResult, type);
+            mIngredientList = mRecipeList.get(0).getIngredients();
 
             Timber.v("fart mJsonResult test after conversion: %s", mJsonResult);
 
@@ -66,15 +67,23 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public int getCount() {
-        return 0;
+        if (mRecipeList == null) {
+            return 0;
+        } else {
+            return mRecipeList.size();
+        }
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_list_item);
 
-        Timber.v("we got this far");
+        String servingsText = mContext.getResources().getString(R.string.servings_text) + " " + String.valueOf(mRecipeList.get(position).getServings());
+        String ingredientsText = mContext.getResources().getString(R.string.ingredients_text) + " " + String.valueOf(mIngredientList.size());
+
         remoteViews.setTextViewText(R.id.name, mRecipeList.get(position).getName());
+        remoteViews.setTextViewText(R.id.servings, servingsText);
+        remoteViews.setTextViewText(R.id.totalIngredients, ingredientsText);
 
         return remoteViews;
     }
