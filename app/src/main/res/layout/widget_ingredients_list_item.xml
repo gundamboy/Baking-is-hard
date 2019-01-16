@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margins_8"
-            android:text="2" />
+            tools:text="2" />
 
         <TextView
             android:id="@+id/ingredientMeasurement"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/margins_8"
-            android:text="Cups" />
+            tools:text="Cups" />
     </LinearLayout>
 
 

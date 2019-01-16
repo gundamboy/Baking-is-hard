@@ -25,4 +25,6 @@ public class AllMyConstants {
     public static final String STATE_NEXT_VIDEO_ICON = "next_video_icon";
     public static final String STATE_PREV_VIDEO_ICON = "prev_video_icon";
     public static final String SHARED_PREFS = "shared_preferences";
+    public static final String WIDGET_INGREDIENT_ACTION = "widget_ingredient_action";
+    public static final String WIDGET_INGREDIENTS = "widget_ingredients";
 }
