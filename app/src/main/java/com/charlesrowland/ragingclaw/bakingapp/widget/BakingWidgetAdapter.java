@@ -27,6 +27,8 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
     private Intent mIntent;
     private ArrayList<Recipe> mRecipeList;
     private String mJsonResult;
+    private String mIngredientsJson;
+    private List<Ingredient> ingredientList;
 
     public BakingWidgetAdapter(Context mContext, Intent mIntent) {
         this.mContext = mContext;
@@ -48,6 +50,12 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
         return mRecipeList;
     }
 
+    private String ingredientsToJson(List<Ingredient> ingredients) {
+        Gson gsonIngList = new Gson();
+        String json = gsonIngList.toJson(ingredients);
+        return json;
+    }
+
     @Override
     public void onCreate() {
 
@@ -65,7 +73,9 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public int getCount() {
-        if (mRecipeList == null) {
+        if (BakingWidgetProvider.mIngredientList != null) {
+            return BakingWidgetProvider.mIngredientList.size();
+        } else if (mRecipeList == null) {
             return 0;
         } else {
             return mRecipeList.size();
@@ -76,7 +86,7 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
     public RemoteViews getViewAt(int position) {
 
         if (BakingWidgetProvider.mIngredientList != null && BakingWidgetProvider.mIngredientList.size() > 0) {
-            Timber.v("fart: ingredient: %s", position);
+            Timber.v("fart: current ingredient: %s", BakingWidgetProvider.mIngredientList.get(position).getIngredient());
 
             RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_ingredients_list_item);
 
@@ -94,7 +104,7 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
             RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_list_item);
             Timber.v("fart BakingWidgetProvider.mIngredientList is null. send some stuff");
 
-            List<Ingredient> ingredientList = mRecipeList.get(position).getIngredients();
+            ingredientList = mRecipeList.get(position).getIngredients();
 
             String servingsText = mContext.getResources().getString(R.string.servings_text) + " " + String.valueOf(mRecipeList.get(position).getServings());
             String ingredientsText = mContext.getResources().getString(R.string.ingredients_text) + " " + String.valueOf(ingredientList.size());
@@ -103,9 +113,13 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
             remoteViews.setTextViewText(R.id.servings, servingsText);
             remoteViews.setTextViewText(R.id.totalIngredients, ingredientsText);
 
+            mIngredientsJson = ingredientsToJson(ingredientList);
+
             Intent ingredientsIntent = new Intent();
             ingredientsIntent.setAction(AllMyConstants.WIDGET_INGREDIENT_ACTION);
-            ingredientsIntent.putParcelableArrayListExtra(AllMyConstants.WIDGET_INGREDIENTS, (ArrayList<? extends Parcelable>) ingredientList);
+            //ingredientsIntent.putParcelableArrayListExtra(AllMyConstants.WIDGET_INGREDIENTS, (ArrayList<? extends Parcelable>) ingredientList);
+            //ingredientsIntent.putExtra(AllMyConstants.WIDGET_INGREDIENTS, position);
+            ingredientsIntent.putExtra(AllMyConstants.WIDGET_INGREDIENTS, mIngredientsJson);
 
             remoteViews.setOnClickFillInIntent(R.id.name, ingredientsIntent);
 

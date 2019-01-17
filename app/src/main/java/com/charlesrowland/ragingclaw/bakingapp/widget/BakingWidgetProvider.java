@@ -9,15 +9,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.charlesrowland.ragingclaw.bakingapp.IngredientsActivity;
 import com.charlesrowland.ragingclaw.bakingapp.R;
 import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
+import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
 import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import timber.log.Timber;
 
@@ -27,8 +33,7 @@ import timber.log.Timber;
 public class BakingWidgetProvider extends AppWidgetProvider {
     public static List<Ingredient> mIngredientList;;
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
@@ -74,27 +79,34 @@ public class BakingWidgetProvider extends AppWidgetProvider {
                 if (intent.hasExtra(AllMyConstants.WIDGET_INGREDIENTS)) {
                     Timber.v("fart intent.hasExtra(AllMyConstants.WIDGET_INGREDIENTS)");
                 } else {
-                    Timber.v("intent is missing the extra");
+                    Timber.v("fart intent is missing the extra");
                 }
 
-                if (intent.getAction().equals(AllMyConstants.WIDGET_INGREDIENT_ACTION) && intent.getParcelableArrayListExtra(AllMyConstants.WIDGET_INGREDIENTS) != null) {
+                if (intent.getAction().equals(AllMyConstants.WIDGET_INGREDIENT_ACTION) && intent.getStringExtra(AllMyConstants.WIDGET_INGREDIENTS) != null) {
                     Timber.v("fart intent has action and the extra is not null");
-                    //                    if (intent.hasExtra(AllMyConstants.WIDGET_INGREDIENTS)) {
-//                        mIngredientList = intent.getParcelableArrayListExtra(AllMyConstants.WIDGET_INGREDIENTS);
-//
-//                        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-//                        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, BakingWidgetProvider.class));
-//
-//                        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
-//
-//                        for (int appWidgetId : appWidgetIds) {
-//                            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.baking_widget_list);
-//                            appWidgetManager.updateAppWidget(appWidgetId, views);
-//                        }
-//                    }
+                    if (intent.hasExtra(AllMyConstants.WIDGET_INGREDIENTS)) {
+                        Gson gson = new Gson();
+                        Type type = new TypeToken<List<Ingredient>>() {}.getType();
+
+                        String mJsonResult = intent.getStringExtra(AllMyConstants.WIDGET_INGREDIENTS);
+
+                        mIngredientList = gson.fromJson(mJsonResult, type);
+                        Timber.v("fart size test: %s", mIngredientList.size());
+
+                        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, BakingWidgetProvider.class));
+
+                        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
+                        views.setViewVisibility(R.id.back_button, View.VISIBLE);
+
+                        for (int appWidgetId : appWidgetIds) {
+                            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.baking_widget_list);
+                            appWidgetManager.updateAppWidget(appWidgetId, views);
+                        }
+                    }
 
                 } else {
-                    Timber.v("fart fuck!");
+                    Timber.v("fart intent is null or does not have action!");
                     mIngredientList.clear();
                 }
             } else {
