@@ -17,6 +17,6 @@
     <string name="previous_video">previous video</string>
     <string name="next_step_button_text">Next Step</string>
     <string name="previous_step_button_text">Previous Step</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">Baking is Hard</string>
     <string name="add_widget">Add widget</string>
 </resources>
