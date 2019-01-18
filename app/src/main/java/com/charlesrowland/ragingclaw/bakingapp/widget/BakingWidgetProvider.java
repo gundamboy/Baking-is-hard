@@ -100,6 +100,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
             views.setRemoteAdapter(R.id.baking_widget_list, serviceIntent);
+            views.setEmptyView(R.id.baking_widget_list, R.id.empty_view);
 
             // go to the ingredients list inside the widget
             Intent onItemClickIntent = new Intent(context, BakingWidgetProvider.class);
