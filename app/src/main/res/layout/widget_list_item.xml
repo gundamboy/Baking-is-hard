@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_item_layout"
     android:background="@color/cardBackground"
     android:orientation="vertical"
     android:layout_marginBottom="@dimen/margins_6"

@@ -34,17 +34,9 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
     public BakingWidgetAdapter(Context mContext, Intent mIntent) {
         this.mContext = mContext;
         this.mIntent = mIntent;
-        this.mRecipeList = getRecipeList();
     }
 
     private ArrayList<Recipe> getRecipeList() {
-
-        if (mIntent.hasExtra("backbutton")) {
-            Timber.e("fart back button came through to adapter");
-        } else {
-            Timber.e("fart back button did not through to adapter");
-        }
-
 
         mRecipeList = null;
         SharedPreferences sharedPreferences;
@@ -67,12 +59,16 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public void onCreate() {
-
+        if(BakingWidgetProvider.mIngredientList == null || BakingWidgetProvider.mIngredientList.size() == 0) {
+            mRecipeList = getRecipeList();
+        }
     }
 
     @Override
     public void onDataSetChanged() {
-        mRecipeList = getRecipeList();
+        if(BakingWidgetProvider.mIngredientList == null || BakingWidgetProvider.mIngredientList.size() == 0) {
+            mRecipeList = getRecipeList();
+        }
     }
 
     @Override
@@ -93,13 +89,9 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public RemoteViews getViewAt(int position) {
-
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_list_item);
 
         if (BakingWidgetProvider.mIngredientList != null && BakingWidgetProvider.mIngredientList.size() > 0) {
-//            remoteViews = null;
-//            remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_ingredients_list_item);
-
             String thisIngredient = BakingWidgetProvider.mIngredientList.get(position).getIngredient();
             String quantity = String.valueOf(BakingWidgetProvider.mIngredientList.get(position).getQuantity());
             String measure = String.valueOf(BakingWidgetProvider.mIngredientList.get(position).getMeasure());
@@ -107,6 +99,11 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
             remoteViews.setTextViewText(R.id.name, thisIngredient);
             remoteViews.setTextViewText(R.id.servings, "Amount: " + " " + String.valueOf(quantity) + " " + measure);
             remoteViews.setViewVisibility(R.id.totalIngredients, View.GONE);
+
+            Intent goBackIntent = new Intent();
+            goBackIntent.setAction(AllMyConstants.WIDGET_BACKBUTTON_ACTION);
+            remoteViews.setOnClickFillInIntent(R.id.widget_item_layout, goBackIntent);
+            mRecipeList = null;
 
         } else {
             ingredientList = mRecipeList.get(position).getIngredients();
@@ -122,11 +119,10 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
 
             Intent ingredientsIntent = new Intent();
             ingredientsIntent.setAction(AllMyConstants.WIDGET_INGREDIENT_ACTION);
-            //ingredientsIntent.putParcelableArrayListExtra(AllMyConstants.WIDGET_INGREDIENTS, (ArrayList<? extends Parcelable>) ingredientList);
             ingredientsIntent.putExtra(AllMyConstants.RECIPE_NAME_EXTRA, mRecipeList.get(position).getName());
             ingredientsIntent.putExtra(AllMyConstants.WIDGET_INGREDIENTS, mIngredientsJson);
 
-            remoteViews.setOnClickFillInIntent(R.id.name, ingredientsIntent);
+            remoteViews.setOnClickFillInIntent(R.id.widget_item_layout, ingredientsIntent);
         }
         return remoteViews;
     }
