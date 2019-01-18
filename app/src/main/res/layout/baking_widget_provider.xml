@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/back_button"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@drawable/ic_back_arrow"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margins_6"

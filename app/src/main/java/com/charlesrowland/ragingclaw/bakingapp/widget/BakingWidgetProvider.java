@@ -39,13 +39,11 @@ public class BakingWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         try {
 
-            if(intent != null && intent.getAction() != null) {
-                Timber.e("fart the intent action: %s", intent.getAction());
+            if(intent.getAction() != null) {
                 if (intent.getAction().equals(AllMyConstants.WIDGET_INGREDIENT_ACTION) && intent.getStringExtra(AllMyConstants.WIDGET_INGREDIENTS) != null) {
                     if (intent.hasExtra(AllMyConstants.WIDGET_INGREDIENTS)) {
                         Gson gson = new Gson();
-                        Type type = new TypeToken<List<Ingredient>>() {
-                        }.getType();
+                        Type type = new TypeToken<List<Ingredient>>() {}.getType();
 
                         String mJsonResult = intent.getStringExtra(AllMyConstants.WIDGET_INGREDIENTS);
                         String recipe_name = intent.getStringExtra(AllMyConstants.RECIPE_NAME_EXTRA);
@@ -56,6 +54,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
 
                         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
                         views.setTextViewText(R.id.widget_title, recipe_name);
+                        views.setViewVisibility(R.id.back_button, View.VISIBLE);
 
                         for (int appWidgetId : appWidgetIds) {
                             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.baking_widget_list);
@@ -63,13 +62,16 @@ public class BakingWidgetProvider extends AppWidgetProvider {
                         appWidgetManager.updateAppWidget(appWidgetIds, views);
                     }
 
-                } else if(intent.getAction().equals(AllMyConstants.WIDGET_BACKBUTTON_ACTION)) {
+                } else if(AllMyConstants.WIDGET_BACKBUTTON_ACTION.equals(intent.getAction())) {
                     mIngredientList.clear();
-                    Timber.e("fart going back");
+
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                     int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, BakingWidgetProvider.class));
+
                     RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
-                    views.setTextViewText(R.id.widget_title, "Baking is Hard");
+                    views.setTextViewText(R.id.widget_title, context.getResources().getString(R.string.app_name));
+                    views.setViewVisibility(R.id.back_button, View.GONE);
+
                     for (int appWidgetId : appWidgetIds) {
                         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.baking_widget_list);
                     }
@@ -88,7 +90,6 @@ public class BakingWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        Timber.e("fart onUpdate");
         for (int appWidgetId : appWidgetIds) {
 
             // Construct the RemoteViews object
@@ -100,11 +101,17 @@ public class BakingWidgetProvider extends AppWidgetProvider {
             serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
             views.setRemoteAdapter(R.id.baking_widget_list, serviceIntent);
 
-            // Click Intent
+            // go to the ingredients list inside the widget
             Intent onItemClickIntent = new Intent(context, BakingWidgetProvider.class);
             onItemClickIntent.setData(Uri.parse(onItemClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
             PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0, onItemClickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setPendingIntentTemplate(R.id.baking_widget_list, onClickPendingIntent);
+
+            // reload the recipe name list
+            Intent goBackIntent = new Intent(context, BakingWidgetProvider.class);
+            goBackIntent.setAction(AllMyConstants.WIDGET_BACKBUTTON_ACTION);
+            PendingIntent goBackPendingIntent = PendingIntent.getBroadcast(context, 1, goBackIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setOnClickPendingIntent(R.id.back_button, goBackPendingIntent);
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);

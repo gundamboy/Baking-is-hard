@@ -59,6 +59,7 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public void onCreate() {
+
         if(BakingWidgetProvider.mIngredientList == null || BakingWidgetProvider.mIngredientList.size() == 0) {
             mRecipeList = getRecipeList();
         }
@@ -100,9 +101,9 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
             remoteViews.setTextViewText(R.id.servings, "Amount: " + " " + String.valueOf(quantity) + " " + measure);
             remoteViews.setViewVisibility(R.id.totalIngredients, View.GONE);
 
-            Intent goBackIntent = new Intent();
-            goBackIntent.setAction(AllMyConstants.WIDGET_BACKBUTTON_ACTION);
-            remoteViews.setOnClickFillInIntent(R.id.widget_item_layout, goBackIntent);
+//            Intent goBackIntent = new Intent();
+//            goBackIntent.setAction(AllMyConstants.WIDGET_BACKBUTTON_ACTION);
+//            remoteViews.setOnClickFillInIntent(R.id.widget_item_layout, goBackIntent);
             mRecipeList = null;
 
         } else {
