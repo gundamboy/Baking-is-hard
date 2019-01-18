@@ -69,6 +69,7 @@ public class BakingWidgetProvider extends AppWidgetProvider {
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                     int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, BakingWidgetProvider.class));
                     RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
+                    views.setTextViewText(R.id.widget_title, "Baking is Hard");
                     for (int appWidgetId : appWidgetIds) {
                         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.baking_widget_list);
                     }

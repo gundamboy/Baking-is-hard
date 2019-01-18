@@ -78,7 +78,7 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public int getCount() {
-        if (BakingWidgetProvider.mIngredientList != null) {
+        if (BakingWidgetProvider.mIngredientList != null && BakingWidgetProvider.mIngredientList.size() > 0) {
             return BakingWidgetProvider.mIngredientList.size();
         } else if (mRecipeList == null) {
             return 0;
