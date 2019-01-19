@@ -31,6 +31,33 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
+/*
+Notes from Matthew on bugs he found:
+
+Check your steps with no video...
+If I'm in Landscape on a phone, and a video is playing I cannot see the printed steps and can't navigate to the next step.
+If I rotate from landscape to portrait, the view only updates _after_ the video is done playing, and then there is no preview (just the player controls)
+
+I'm saying from that view I have to navigate out to go to the next step
+
+But I can NEVER see the actual printed steps if there is a vide
+
+CharlesRowland.ProjectCoach [11:19 AM]
+cause its 'full'
+
+TheBaileyBrew.ProjectCoach [11:19 AM]
+I get that.... but it defeats the purpose of having printed instructions.
+
+CharlesRowland.ProjectCoach [11:20 AM]
+i feel like if you are in landscape, you want a bigger video. without it being full like that, you cant see the video in frame, its under the fold. exoplayer doesnt have a full screen button out of the box. i couldnt get it to work. this was my solution
+
+TheBaileyBrew.ProjectCoach [11:20 AM]
+Several of the videos don't have words, so you're watching a video of mixing ingredients but never hear what they are
+
+CharlesRowland.ProjectCoach [11:21 AM]
+the other solution i guess is to use the tablet layout
+ */
+
 public class MainActivity extends AppCompatActivity {
     private RecipeService mRecipeService;
     private RecipeAdapter mRecipeAdapter;
@@ -75,13 +102,11 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(MainActivity.this);
 
         if (savedInstanceState != null) {
-            Timber.v("onCreate savedInstanceState =! null");
             mRecipeList = savedInstanceState.getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
             mRecipeJsonResult = savedInstanceState.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE);
             attachAdapter();
             HideEmptyView();
         } else {
-            Timber.v("onCreate savedInstanceState == null");
             mRecipeService = new RecipeClient().mRecipeService;
             new FetchRecipesAsync().execute();
         }
@@ -145,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void attachAdapter() {
-        Timber.v("attachAdapter");
         mRecipeAdapter = new RecipeAdapter(MainActivity.this, mRecipeList, mRecipeJsonResult, mTwoPane);
         mRecipeRecyclerView.setAdapter(mRecipeAdapter);
         mRecipeRecyclerView.setLayoutManager(mLayoutManager);
@@ -156,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Timber.v("onSaveInstanceState");
         mRecipeState = mLayoutManager.onSaveInstanceState();
         outState.putParcelable(AllMyConstants.RECIPE_RECYCLER_STATE, mRecipeState);
         outState.putString(AllMyConstants.RECIPE_JSON_RESULT_STATE, mRecipeJsonResult);
@@ -169,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Timber.v("onRestoreInstanceState");
         mRecipeState = savedInstanceState.getParcelable(AllMyConstants.RECIPE_RECYCLER_STATE);
         mRecipeJsonResult = savedInstanceState.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE);
 

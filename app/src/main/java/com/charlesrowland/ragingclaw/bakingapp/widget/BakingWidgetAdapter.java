@@ -98,12 +98,9 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
             String measure = String.valueOf(BakingWidgetProvider.mIngredientList.get(position).getMeasure());
 
             remoteViews.setTextViewText(R.id.name, thisIngredient);
-            remoteViews.setTextViewText(R.id.servings, "Amount: " + " " + String.valueOf(quantity) + " " + measure);
+            remoteViews.setTextViewText(R.id.servings, "Amount:" + " " + String.valueOf(quantity) + " " + measure);
             remoteViews.setViewVisibility(R.id.totalIngredients, View.GONE);
 
-//            Intent goBackIntent = new Intent();
-//            goBackIntent.setAction(AllMyConstants.WIDGET_BACKBUTTON_ACTION);
-//            remoteViews.setOnClickFillInIntent(R.id.widget_item_layout, goBackIntent);
             mRecipeList = null;
 
         } else {
