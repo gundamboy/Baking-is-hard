@@ -27,6 +27,7 @@ public class StepDetailActivity extends AppCompatActivity {
     private int mStepNumber = 0;
     private Recipe mCurrentRecipe;
     private boolean isLandscape;
+    public ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class StepDetailActivity extends AppCompatActivity {
 
         // Show the Up button in the action bar.
 
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
 
         if (savedInstanceState != null) {
             mRecipeArrayList = savedInstanceState.getParcelableArrayList(AllMyConstants.RECIPE_ARRAYLIST_STATE);
@@ -65,8 +66,9 @@ public class StepDetailActivity extends AppCompatActivity {
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            //actionBar.setTitle(getString(R.string.title_step_detail, mCurrentRecipe.getName(), String.valueOf(mStepNumber)));
         }
+
+
     }
 
     @Override

@@ -7,6 +7,8 @@
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/video_constraint_layout"
+        android:minHeight="200dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -28,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margins_8"
-            android:layout_marginTop="@dimen/margins_16"
+            android:layout_marginTop="@dimen/margins_20"
             android:layout_marginEnd="@dimen/margins_8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +42,7 @@
             style="@style/VideoStepsButtons"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/nav_next_prev"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/margins_8"
             android:layout_marginBottom="@dimen/margins_8"
             android:contentDescription="@string/next_video"
@@ -48,6 +51,7 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step_description"
             tools:visibility="visible" />
 
         <Button
@@ -56,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/nav_next_prev"
             android:layout_marginStart="@dimen/margins_8"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="@dimen/margins_8"
             android:contentDescription="@string/previous_video"
             android:drawableStart="@drawable/ic_nav_prev"
@@ -63,6 +68,7 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step_description"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

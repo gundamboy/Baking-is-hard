@@ -27,7 +27,7 @@
 
     <style name="StepDetailText" parent="AppTheme">
         <item name="android:textColor">@color/primaryTextColor</item>
-        <item name="android:textSize">@dimen/text24</item>
+        <item name="android:textSize">@dimen/text20</item>
     </style>
 
     <style name="StepsListItemTextLandscape" parent="AppTheme">

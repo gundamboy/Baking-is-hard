@@ -9,6 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +21,9 @@ import timber.log.Timber;
 
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -79,21 +84,25 @@ public class VideoFragment extends Fragment {
     private boolean isLandscape;
     private boolean mIsLargeScreen;
 
-    @BindView(R.id.step_description) TextView mStepDescription;
-    @BindView(R.id.player_view) PlayerView mPlayerView;
-    @BindView(R.id.next_video) Button mNextVideoButton;
-    @BindView(R.id.prev_video) Button mPrevVideoButton;
+    @BindView(R.id.step_description)
+    TextView mStepDescription;
+    @BindView(R.id.player_view)
+    PlayerView mPlayerView;
+    @BindView(R.id.next_video)
+    Button mNextVideoButton;
+    @BindView(R.id.prev_video)
+    Button mPrevVideoButton;
     private Unbinder unbinder;
 
     public VideoFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.video_fragment_layout, container, false);
         unbinder = ButterKnife.bind(this, fragmentView);
+
 
         isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         mIsLargeScreen = Objects.requireNonNull(getActivity()).getResources().getBoolean(R.bool.isLargeScreen);
@@ -113,7 +122,7 @@ public class VideoFragment extends Fragment {
 
         int stepCount = mStepList.size();
         mShowPrevArrow = mStepNumber != 0;
-        mShowNextArrow = mStepNumber != stepCount-1;
+        mShowNextArrow = mStepNumber != stepCount - 1;
 
         if (savedInstanceState != null) {
             mCurrentStep = savedInstanceState.getParcelable(AllMyConstants.STEP_SINGLE);
@@ -122,7 +131,12 @@ public class VideoFragment extends Fragment {
             mShowPrevArrow = savedInstanceState.getBoolean(AllMyConstants.STATE_PREV_VIDEO_ICON);
             mPlayerPosition = savedInstanceState.getLong(AllMyConstants.STEP_VIDEO_POSITION);
             mWindowIndex = savedInstanceState.getInt(AllMyConstants.STEP_PLAY_WINDOW_INDEX);
-            mVideoUri = Uri.parse(savedInstanceState.getString(AllMyConstants.STEP_URI));
+
+            if (!mCurrentStep.getVideoURL().isEmpty()) {
+                mVideoUri = Uri.parse(savedInstanceState.getString(AllMyConstants.STEP_URI));
+            } else {
+                mVideoUri = null;
+            }
         }
 
         if (!mCurrentStep.getVideoURL().isEmpty()) {
@@ -131,9 +145,13 @@ public class VideoFragment extends Fragment {
             mStepDescription.setVisibility(View.VISIBLE);
         }
 
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(getString(R.string.title_step_detail, mTitle, String.valueOf(mStepNumber)));
+        }
+
+        if (isLandscape && mVideoUri != null) {
+            setHasOptionsMenu(true);
         }
 
         initializePlayer(mVideoUri);
@@ -146,7 +164,7 @@ public class VideoFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (!mIsLargeScreen && mVideoUri != null) {
+        if (!mIsLargeScreen && mVideoUri != null && mSimplePlayer != null) {
             mPlayerView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
 
                 @Override
@@ -187,7 +205,7 @@ public class VideoFragment extends Fragment {
 
                 @Override
                 public void onClick(View v) {
-                    mStepNumber +=1;
+                    mStepNumber += 1;
                     loadNewStep(mStepNumber);
                 }
             });
@@ -267,9 +285,9 @@ public class VideoFragment extends Fragment {
         if (Util.SDK_INT <= 23 || mSimplePlayer == null) {
             initializePlayer(mVideoUri);
         }
-        if(mSimplePlayer != null){
+        if (mSimplePlayer != null) {
             Timber.v("on resume mPlayerPosition: %s", mPlayerPosition);
-            if(mPlayerPosition > 0) {
+            if (mPlayerPosition > 0) {
                 mSimplePlayer.setPlayWhenReady(mShouldPlayWhenReady);
                 mPlayerView.hideController();
             }
@@ -281,7 +299,7 @@ public class VideoFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(mSimplePlayer != null){
+        if (mSimplePlayer != null) {
             updateStartPosition();
             if (Util.SDK_INT <= 23) {
                 releasePlayer();
@@ -292,7 +310,7 @@ public class VideoFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if(mSimplePlayer != null){
+        if (mSimplePlayer != null) {
             updateStartPosition();
             if (Util.SDK_INT > 23) {
                 releasePlayer();
@@ -320,7 +338,8 @@ public class VideoFragment extends Fragment {
         outState.putBoolean(AllMyConstants.STATE_PREV_VIDEO_ICON, mShowPrevArrow);
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
@@ -350,4 +369,23 @@ public class VideoFragment extends Fragment {
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu options from the res/menu/menu_catalog.xml file.
+        // This adds menu items to the app bar.
+        inflater.inflate(R.menu.menu_options, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.next_step:
+                mStepNumber += 1;
+                loadNewStep(mStepNumber);
+                return true;
+        }
+        return false;
+    }
 }

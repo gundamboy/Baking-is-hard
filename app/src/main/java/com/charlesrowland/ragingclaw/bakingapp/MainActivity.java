@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-
     @BindView(R.id.recipeRecyclerView) RecyclerView mRecipeRecyclerView;
     @BindView(R.id.emptyViews) View mEmptyView;
 
