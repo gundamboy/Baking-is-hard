@@ -20,6 +20,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".StepActivity"
+            android:label="@string/title_step_list"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.charlesrowland.ragingclaw.bakingapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".StepDetailActivity"
+            android:label="@string/title_step_detail"
+            android:parentActivityName=".StepActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.charlesrowland.ragingclaw.bakingapp.StepActivity" />
+        </activity>
+        <activity android:name=".IngredientsActivity" />
+
+        <receiver android:name=".widget.BakingWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_widget_provider_info" />
+        </receiver>
+
+        <service android:name=".widget.BakingWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

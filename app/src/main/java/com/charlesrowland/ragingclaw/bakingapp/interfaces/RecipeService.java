@@ -2,12 +2,13 @@ package com.charlesrowland.ragingclaw.bakingapp.interfaces;
 
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 
-public interface ApiInterface {
+public interface RecipeService {
 
     @GET("baking.json")
-    Call<Recipe> getRecipes();
+    Call<ArrayList<Recipe>> getRecipes();
 }

@@ -20,9 +20,50 @@
         <item name="android:textSize">@dimen/text18</item>
     </style>
 
+    <style name="StepsListItemText" parent="AppTheme">
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textSize">@dimen/text16</item>
+    </style>
+
+    <style name="StepDetailText" parent="AppTheme">
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textSize">@dimen/text20</item>
+    </style>
+
+    <style name="StepsListItemTextLandscape" parent="AppTheme">
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textSize">@dimen/text14</item>
+    </style>
+
     <style name="RecipeListItemMetaText" parent="AppTheme">
         <item name="android:textColor">@color/primaryTextColor</item>
-        <item name="android:textSize">@dimen/text10</item>
+        <item name="android:textSize">@dimen/text12</item>
     </style>
+
+    <style name="VideoStepsButtons" parent="AppTheme">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/padding_8</item>
+        <item name="android:textSize">@dimen/text20</item>
+        <item name="android:background">@null</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="BakingButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">?android:attr/textAppearanceButton</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

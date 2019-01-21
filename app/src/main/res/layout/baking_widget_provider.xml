@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="@dimen/widget_margin">
+
+    <RelativeLayout
+        android:id="@+id/widget_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_back_arrow"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margins_6"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:rotation="180"/>
+
+        <TextView
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:id="@+id/widget_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/baking_widget_list"
+        android:background="@color/cardBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/no_recipe_selected"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text20"
+            android:textStyle="bold" />
+        <ImageView
+            android:alpha="0.2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/mixer"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/video_constraint_layout"
+        android:minHeight="@dimen/video_fragment_min_height"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margins_8"
+            android:layout_marginTop="@dimen/margins_8"
+            android:layout_marginEnd="@dimen/margins_8"
+            app:default_artwork="@drawable/baking_intro_screenshot"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/step_description"
+            style="@style/StepDetailText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margins_8"
+            android:layout_marginTop="@dimen/margins_20"
+            android:layout_marginEnd="@dimen/margins_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/player_view"
+            tools:text="This is a description" />
+
+        <Button
+            android:id="@+id/next_video"
+            style="@style/VideoStepsButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nav_next_prev"
+            android:layout_marginTop="@dimen/margins_8"
+            android:layout_marginEnd="@dimen/margins_8"
+            android:layout_marginBottom="@dimen/margins_8"
+            android:contentDescription="@string/next_video"
+            android:drawableEnd="@drawable/ic_nav_next"
+            android:text="@string/next_step_button_text"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step_description"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/prev_video"
+            style="@style/VideoStepsButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nav_next_prev"
+            android:layout_marginStart="@dimen/margins_8"
+            android:layout_marginTop="@dimen/margins_8"
+            android:layout_marginBottom="@dimen/margins_8"
+            android:contentDescription="@string/previous_video"
+            android:drawableStart="@drawable/ic_nav_prev"
+            android:text="@string/previous_step_button_text"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step_description"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

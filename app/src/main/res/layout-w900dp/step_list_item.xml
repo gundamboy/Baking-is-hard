@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CardView.Light"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margins_8"
+    android:layout_marginBottom="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/StepsListItemTextLandscape"
+            android:id="@+id/stepNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margins_8"
+            android:layout_marginTop="@dimen/margins_8"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="3:" />
+
+        <TextView
+            style="@style/StepsListItemTextLandscape"
+            android:id="@+id/stepShortDescription"
+            android:layout_width="@dimen/steps_item_width_landscape"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margins_4"
+            android:layout_marginTop="@dimen/margins_8"
+            android:layout_marginBottom="@dimen/margins_8"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/stepNum"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Add butter and milk to dry ingredients." />
+
+        <ImageView
+            android:layout_width="@dimen/play_circle_dimen"
+            android:layout_height="@dimen/play_circle_dimen"
+            android:layout_marginEnd="@dimen/margins_8"
+            android:src="@drawable/ic_play_circle"
+            app:layout_constraintBottom_toBottomOf="@+id/stepShortDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/stepShortDescription" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

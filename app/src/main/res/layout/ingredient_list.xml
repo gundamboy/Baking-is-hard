@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ingredient_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margins_8"
+            android:layout_marginTop="@dimen/margins_8"
+            android:layout_marginEnd="@dimen/margins_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".StepActivity"
+            tools:itemCount="6"
+            tools:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/ingredient_list_item" />
+
+        <Button
+            android:id="@+id/start_baking_button"
+            style="@style/BakingButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margins_8"
+            android:layout_marginTop="@dimen/margins_8"
+            android:layout_marginEnd="@dimen/margins_8"
+            android:layout_marginBottom="@dimen/margins_8"
+            android:text="@string/start_baking_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ingredient_list" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
