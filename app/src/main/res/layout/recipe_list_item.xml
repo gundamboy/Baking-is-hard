@@ -45,7 +45,7 @@
             android:id="@+id/totalIngredients"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="@dimen/margins_24"
             android:layout_marginTop="@dimen/margins_8"
             android:layout_marginBottom="@dimen/margins_8"
             app:layout_constraintBottom_toBottomOf="parent"

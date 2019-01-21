@@ -5,21 +5,6 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import timber.log.Timber;
-
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,8 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
@@ -44,8 +27,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.PlaybackControlView;
-import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -54,6 +35,16 @@ import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -231,7 +222,6 @@ public class VideoFragment extends Fragment {
             mPlayerView.setVisibility(View.GONE);
         } else {
             if (mSimplePlayer == null) {
-                Timber.i("fart: mSimplePlayer is null");
                 // Create a default TrackSelector
                 mBandwidthMeter = new DefaultBandwidthMeter();
                 mVideoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(mBandwidthMeter);
@@ -286,7 +276,6 @@ public class VideoFragment extends Fragment {
             initializePlayer(mVideoUri);
         }
         if (mSimplePlayer != null) {
-            Timber.v("on resume mPlayerPosition: %s", mPlayerPosition);
             if (mPlayerPosition > 0) {
                 mSimplePlayer.setPlayWhenReady(mShouldPlayWhenReady);
                 mPlayerView.hideController();

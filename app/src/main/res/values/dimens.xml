@@ -62,4 +62,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="margins_6">6dp</dimen>
+    <dimen name="nestedscroll_width">400dp</dimen>
+    <dimen name="video_fragment_min_height">200dp</dimen>
 </resources>

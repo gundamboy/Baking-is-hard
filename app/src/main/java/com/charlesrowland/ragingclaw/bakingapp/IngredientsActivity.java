@@ -1,15 +1,5 @@
 package com.charlesrowland.ragingclaw.bakingapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import timber.log.Timber;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -23,6 +13,15 @@ import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class IngredientsActivity extends AppCompatActivity {
     private ArrayList<Recipe> mRecipeArrayList;
@@ -48,12 +47,9 @@ public class IngredientsActivity extends AppCompatActivity {
         Intent ingredientIntent = getIntent();
 
         if (ingredientIntent != null && ingredientIntent.hasExtra(AllMyConstants.RECIPE_INTENT_EXTRA)) {
-            Timber.v("ingredientIntent != null and has intent extra");
             mRecipeArrayList = ingredientIntent.getParcelableArrayListExtra(AllMyConstants.RECIPE_INTENT_EXTRA);
             mIngredientList = mRecipeArrayList.get(0).getIngredients();
             actionBar.setTitle(getString(R.string.title_ingredients_list, mRecipeArrayList.get(0).getName()));
-        } else {
-            // TODO: add crash prevention if intent is missing
         }
 
         assert mIngredientRecyclerView != null;
@@ -96,7 +92,4 @@ public class IngredientsActivity extends AppCompatActivity {
         mIngredientAdapter = new IngredientAdapter(this, (ArrayList<Ingredient>) mIngredientList);
         recyclerView.setAdapter(mIngredientAdapter);
     }
-
-    // TODO: implement saved/restore instance state methods
-    // TODO: implement on resume method
 }

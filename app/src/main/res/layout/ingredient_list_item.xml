@@ -40,7 +40,7 @@
 
         <View
             android:id="@+id/view"
-            android:layout_width="2dp"
+            android:layout_width="@dimen/margins_2"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/margins_8"
             android:layout_marginBottom="@dimen/margins_8"

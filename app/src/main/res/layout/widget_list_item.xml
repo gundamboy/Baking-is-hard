@@ -38,7 +38,7 @@
             android:id="@+id/totalIngredients"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/margins_16"
             android:layout_toEndOf="@+id/servings"
             tools:text="Total Ingredients: 10" />
     </RelativeLayout>

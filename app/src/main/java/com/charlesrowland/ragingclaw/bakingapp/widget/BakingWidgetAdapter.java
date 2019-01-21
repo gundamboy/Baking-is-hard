@@ -3,8 +3,6 @@ package com.charlesrowland.ragingclaw.bakingapp.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -20,8 +18,6 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
     private Context mContext;
@@ -41,7 +37,7 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
         mRecipeList = null;
         SharedPreferences sharedPreferences;
         if ((sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext)) != null) {
-            mJsonResult = sharedPreferences.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE, "No Data");
+            mJsonResult = sharedPreferences.getString(AllMyConstants.RECIPE_JSON_RESULT_STATE, mContext.getResources().getString(R.string.default_json_response));
 
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<Recipe>>() {}.getType();
@@ -96,9 +92,10 @@ public class BakingWidgetAdapter implements RemoteViewsService.RemoteViewsFactor
             String thisIngredient = BakingWidgetProvider.mIngredientList.get(position).getIngredient();
             String quantity = String.valueOf(BakingWidgetProvider.mIngredientList.get(position).getQuantity());
             String measure = String.valueOf(BakingWidgetProvider.mIngredientList.get(position).getMeasure());
+            String amountString = mContext.getResources().getString(R.string.ingredients_amount);
 
             remoteViews.setTextViewText(R.id.name, thisIngredient);
-            remoteViews.setTextViewText(R.id.servings, "Amount:" + " " + String.valueOf(quantity) + " " + measure);
+            remoteViews.setTextViewText(R.id.servings, amountString + " " + String.valueOf(quantity) + " " + measure);
             remoteViews.setViewVisibility(R.id.totalIngredients, View.GONE);
 
             mRecipeList = null;

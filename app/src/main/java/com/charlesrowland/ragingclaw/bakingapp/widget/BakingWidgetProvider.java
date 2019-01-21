@@ -6,28 +6,18 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.Image;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
 
-import com.charlesrowland.ragingclaw.bakingapp.IngredientsActivity;
 import com.charlesrowland.ragingclaw.bakingapp.R;
 import com.charlesrowland.ragingclaw.bakingapp.model.Ingredient;
-import com.charlesrowland.ragingclaw.bakingapp.model.Recipe;
 import com.charlesrowland.ragingclaw.bakingapp.utils.AllMyConstants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-
-import timber.log.Timber;
 
 /**
  * Implementation of App Widget functionality.
@@ -81,7 +71,6 @@ public class BakingWidgetProvider extends AppWidgetProvider {
 
         } catch(NullPointerException e) {
             e.printStackTrace();
-            Timber.v("fart something failed onReceive");
         }
 
         super.onReceive(context, intent);
